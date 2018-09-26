@@ -122,56 +122,7 @@ public class ParseGEDCOM {
 										System.exit(0);
 									}
 								} else if(tag.equals("FAM")){
-									if (addIndi) {
-										if(personInfo.get(0) != "0") {
-											for (int i = 0; i < 9; i++) {
-												if (personInfo.get(i) == "0") {
-													personInfo.set(i, "NA");
-												}
-											}
-											people.add(person);
-											rowList.add(personInfo);
-											addIndi = false;
-										}
-										
-										//sort id
-										for(int i = 0; i < rowList.size() - 1; i++) {
-											int min = Integer.parseInt(rowList.get(i).get(0).substring(1, rowList.get(i).get(0).length()));
-											int minIndex = i;
-											for (int j = i + 1; j < rowList.size(); j++) {
-												if (Integer.parseInt(rowList.get(j).get(0).substring(1, rowList.get(j).get(0).length())) < min) {
-													min = Integer.parseInt(rowList.get(j).get(0).substring(1, rowList.get(j).get(0).length()));
-													minIndex = j;
-												}
-												
-											}
-											List<String> temp = rowList.get(i);
-											rowList.set(i, rowList.get(minIndex));
-											rowList.set(minIndex, temp);
-										}
-										
-										
-										
-										
-										//print individual table
-										System.out.println("Individuals");
-										Board board = new Board(350);
-								        Table table = new Table(board, 350, headerList, rowList);
-								        table.setGridMode(Table.GRID_COLUMN);
-								        //setting width and data-align of columns
-								        List<Integer> colWidthsList = Arrays.asList(10, 30, 10, 14, 10, 10, 14, 30, 30);
-								        List<Integer> colAlignList = Arrays.asList(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, 
-								        										   Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, 
-								        										   Block.DATA_CENTER);
-								        table.setColWidthsList(colWidthsList);
-								        table.setColAlignsList(colAlignList);
-								        
-								        Block tableBlock = table.tableToBlocks();
-								        board.setInitialBlock(tableBlock);
-								        board.build();
-								        String tableString = board.getPreview();
-								        System.out.println(tableString);
-									}
+
 									
 									//read family id
 									if(str.charAt(0) == '0') {
@@ -457,6 +408,58 @@ public class ParseGEDCOM {
 						} 	
 					}
 					
+					
+					
+					if(personInfo.get(0) != "0") {
+						for (int i = 0; i < 9; i++) {
+							if (personInfo.get(i) == "0") {
+								personInfo.set(i, "NA");
+							}
+						}
+						people.add(person);
+						rowList.add(personInfo);							
+					}
+						
+					//sort id
+					for(int i = 0; i < rowList.size() - 1; i++) {
+						int min = Integer.parseInt(rowList.get(i).get(0).substring(1, rowList.get(i).get(0).length()));
+						int minIndex = i;
+						for (int j = i + 1; j < rowList.size(); j++) {
+							if (Integer.parseInt(rowList.get(j).get(0).substring(1, rowList.get(j).get(0).length())) < min) {									min = Integer.parseInt(rowList.get(j).get(0).substring(1, rowList.get(j).get(0).length()));
+									minIndex = j;
+							}
+					
+						}
+						List<String> temp = rowList.get(i);
+						rowList.set(i, rowList.get(minIndex));
+						rowList.set(minIndex, temp);
+					}
+						
+						
+						
+						
+					//print individual table
+					System.out.println("Individuals");
+					Board board = new Board(350);
+			        Table table = new Table(board, 350, headerList, rowList);
+			        table.setGridMode(Table.GRID_COLUMN);
+			        //setting width and data-align of columns
+			        List<Integer> colWidthsList = Arrays.asList(10, 30, 10, 14, 10, 10, 14, 30, 30);
+			        List<Integer> colAlignList = Arrays.asList(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, 
+			        										   Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, 
+			        										   Block.DATA_CENTER);
+			        table.setColWidthsList(colWidthsList);
+			        table.setColAlignsList(colAlignList);
+			        
+			        Block tableBlock = table.tableToBlocks();
+			        board.setInitialBlock(tableBlock);
+			        board.build();
+			        String tableString = board.getPreview();
+			        System.out.println(tableString);
+					
+					
+					
+					
 					//add family
 					if(familyInfo.get(0) != "0") {
 						for (int i = 0; i< 8; i++) {
@@ -485,21 +488,21 @@ public class ParseGEDCOM {
 					
 					//print families table
 					System.out.println("Families");
-					Board board = new Board(350);
-			        Table table = new Table(board, 350, headerList2, rowList2);
-			        table.setGridMode(Table.GRID_COLUMN);
+					Board board1 = new Board(350);
+			        Table table1 = new Table(board1, 350, headerList2, rowList2);
+			        table1.setGridMode(Table.GRID_COLUMN);
 			        //setting width and data-align of columns
-			        List<Integer> colWidthsList = Arrays.asList(10, 14, 10, 10, 30, 10, 30, 30);
-			        List<Integer> colAlignList = Arrays.asList(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, 
+			        List<Integer> colWidthsList1 = Arrays.asList(10, 14, 10, 10, 30, 10, 30, 30);
+			        List<Integer> colAlignList1 = Arrays.asList(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, 
 			        										   Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER);
-			        table.setColWidthsList(colWidthsList);
-			        table.setColAlignsList(colAlignList);
+			        table1.setColWidthsList(colWidthsList1);
+			        table1.setColAlignsList(colAlignList1);
 			        
-			        Block tableBlock = table.tableToBlocks();
-			        board.setInitialBlock(tableBlock);
-			        board.build();
-			        String tableString = board.getPreview();
-			        System.out.println(tableString);
+			        Block tableBlock1 = table1.tableToBlocks();
+			        board1.setInitialBlock(tableBlock1);
+			        board1.build();
+			        String tableString1 = board1.getPreview();
+			        System.out.println(tableString1);
 					
 					fileReader.close();
 					break;
