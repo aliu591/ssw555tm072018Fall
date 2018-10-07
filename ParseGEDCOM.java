@@ -10,16 +10,18 @@ import java.util.*;
 
 
 public class ParseGEDCOM {
-	private List<String> headerList;    	//table header for indi
-	private List<String> headerList2;		//table header for fam
+	private List<String> headerList_indi;    	//table header for indi
+	private List<String> headerList_fam;		//table header for fam
+	private List <String> headerList_death;		//table header for deceased
 	private List<String> personInfo;
 	private List<String> familyInfo;
-	private List<List<String>> rowList;		//list of indi
-	private List<List<String>> rowList2;	//list of fam
+	private List<List<String>> rowList_indi;		//list of indi
+	private List<List<String>> rowList_fam;			//list of fam
+	private List<List<String>> rowList_death;		//list of death
 	private Person person;
-	private List<Person> people = new ArrayList<>(); //List of persons with id for future use
-//	private int countIndi;
-//	private int countFam;
+	private Family family;
+	public List<Person> people = new ArrayList<>();    //List of persons with id 
+	public List<Family> families =  new ArrayList<>(); //List of families with id 
 	
 	
 	/**
@@ -46,11 +48,13 @@ public class ParseGEDCOM {
 		list.add("0 TRLR");
 		list.add("0 NOTE");
 		
-		//Individuals table
-		headerList = Arrays.asList("ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse");
-		headerList2 = Arrays.asList("ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children");
-		rowList = new ArrayList<>();
-		rowList2 = new ArrayList<>();
+		//Tables
+		headerList_indi = Arrays.asList("ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse");
+		headerList_fam = Arrays.asList("ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children");
+		headerList_death = Arrays.asList("ID", "Name", "Death Date");
+		rowList_indi = new ArrayList<>();
+		rowList_fam = new ArrayList<>();
+		rowList_death = new ArrayList<>();
 		personInfo = new ArrayList<>(Arrays.asList("0","0","0","0","0","0","0","0","0"));
 		familyInfo = new ArrayList<>(Arrays.asList("0","0","0","0","0","0","0","0"));
 		StringBuffer sb_fams = null;
@@ -69,7 +73,7 @@ public class ParseGEDCOM {
 				String fileName = readerOfFile.readLine();
 				URL path = ParseGEDCOM.class.getResource(fileName);
 				File f = new File(path.getFile());
-				
+				//check the validation of the file
 				if(f.exists() && f.canRead() && f.isFile()) {
 					BufferedReader fileReader = new BufferedReader(new FileReader(f));
 					String str;
@@ -93,7 +97,7 @@ public class ParseGEDCOM {
 													}
 												}
 												people.add(person);
-												rowList.add(personInfo);
+												rowList_indi.add(personInfo);
 											}
 										}
 										firstAddIndi = true;
@@ -111,19 +115,18 @@ public class ParseGEDCOM {
 										
 									
 									} else {
-										//invalid indi or fam level
+										//invalid individual level
 										int index = str.indexOf(tag);
 										StringBuilder builder = new StringBuilder(str);
 										builder.delete(index - 1, index + tag.length());
 										builder.replace(1, 2, "|");
 										builder.insert(2, tag + "|N|");
 										System.out.println("<-- " + builder.toString());
-										System.out.println("Invalid tag. Please check GEDCOM file");
+										System.out.println("Invalid INDI level. Please check GEDCOM file");
 										System.exit(0);
 									}
 								} else if(tag.equals("FAM")){
 
-									
 									//read family id
 									if(str.charAt(0) == '0') {
 										if (firstAddFam) {
@@ -133,31 +136,46 @@ public class ParseGEDCOM {
 														familyInfo.set(i, "NA");
 													}
 												}
-												rowList2.add(familyInfo);
+												rowList_fam.add(familyInfo);
+												families.add(family);
 											}
 										}
 										
 										//reset variable for new family id
 										familyInfo = new ArrayList<>(Arrays.asList("0","0","0","0","0","0","0","0"));
 										sb_chil = new StringBuffer();
-										
-										
+										family = new Family();
+									
+																				
 										//set id
 										int index = str.indexOf(tag);
 										familyInfo.set(0, str.substring(2, index  - 1));
+										family.id_fam = str.substring(2, index  - 1);
 										firstAddFam = true;
 
-									}								
+									} else {
+										//invalid fam level
+										int index = str.indexOf(tag);
+										StringBuilder builder = new StringBuilder(str);
+										builder.delete(index - 1, index + tag.length());
+										builder.replace(1, 2, "|");
+										builder.insert(2, tag + "|N|");
+										System.out.println("<-- " + builder.toString());
+										System.out.println("Invalid FAM level. Please check GEDCOM file");
+										System.exit(0);
+									} 								
 								} else {
 									//family tag
 									if (tag.equals("1 HUSB")) {
 										String husb = str.substring(7);
 										familyInfo.set(3, husb);
+										family.id_husband = husb;
 										
 										//find the name with id
 										for (Person p : people) {
 											if (p.id_indi.equals(husb)) {
 												familyInfo.set(4, p.name);
+												family.name_hasband = p.name;
 												break;
 											}
 										}
@@ -168,10 +186,12 @@ public class ParseGEDCOM {
 									if (tag.equals("1 WIFE")) {
 										String wife = str.substring(7);
 										familyInfo.set(5, wife);
+										family.id_wife = wife;
 										//find the name with id
 										for (Person p : people) {
 											if (p.id_indi.equals(wife)) {
 												familyInfo.set(6, p.name);
+												family.name_wife = p.name;
 												break;
 											}
 										}
@@ -204,8 +224,20 @@ public class ParseGEDCOM {
 												day = sb.toString();
 											}
 											String numMonth = convertMonth(month);
-													
+											
+											//check if the date is valid
+											try {
+												LocalDate marryday = LocalDate.of(Integer.parseInt(year), Integer.parseInt(numMonth), 
+														  Integer.parseInt(day));
+											}catch (Exception e){
+												System.out.println("ERROR: FAMILY: US42:"+ familyInfo.get(0)+ ":Marry day is invalid");
+												throw e;
+											}
+											
 											familyInfo.set(1, year+"-" + numMonth + "-"+day);
+											family.marr_year = year;
+											family.marr_month = numMonth;
+											family.marr_day = day;
 										}
 									}
 									
@@ -235,13 +267,26 @@ public class ParseGEDCOM {
 											}
 											String numMonth = convertMonth(month);
 													
+											//check if the date is valid
+											try {
+												LocalDate divorceday = LocalDate.of(Integer.parseInt(year), Integer.parseInt(numMonth), 
+														  Integer.parseInt(day));
+											}catch (Exception e){
+												System.out.println("ERROR: FAMILY: US42:" + familyInfo.get(0)+ ": Divorced day is invalid");
+												throw e;
+											}
+											
 											familyInfo.set(2, year+"-" + numMonth + "-"+day);
+											family.div_year = year;
+											family.div_month = numMonth;
+											family.div_day = day;
 
 										}
 										
 									}
 									
 									if (tag.equals("1 CHIL")) {
+										family.id_children.add(str.substring(7));
 										if(familyInfo.get(7) == "0") {
 											sb_chil.append("'"+ str.substring(7)+"'");
 											familyInfo.set(7, "{"+ sb_chil.toString() + "}");
@@ -297,13 +342,19 @@ public class ParseGEDCOM {
 											person.birt_day = day;
 											
 											personInfo.set(3, person.birt_year+"-"+person.birt_month+"-"+person.birt_day);
+											
 											//calculate the age
-											LocalDate today = LocalDate.now();                        
-											LocalDate birthday = LocalDate.of(Integer.parseInt(year), Integer.parseInt(numMonth), 
-																			  Integer.parseInt(day));  	
-											 
-											Period diff = Period.between(birthday, today);
-											person.age = Integer.toString(diff.getYears());
+											try {
+												LocalDate today = LocalDate.now();                        
+												LocalDate birthday = LocalDate.of(Integer.parseInt(year), Integer.parseInt(numMonth), 
+																				  Integer.parseInt(day));  
+												Period diff = Period.between(birthday, today);
+												person.age = Integer.toString(diff.getYears());
+											} catch (Exception e){
+												System.out.println("ERROR: INDIVIDUAL: US42:"+ personInfo.get(0)+ ": Birthday is invalid");
+												throw e;
+											}
+											
 											personInfo.set(4, person.age);
 											personInfo.set(5, person.alive);
 											personInfo.set(6, "NA"); //not death
@@ -353,6 +404,7 @@ public class ParseGEDCOM {
 												}
 											}
 											String day = longDate.substring(0, index);
+											
 											//single digit day
 											if (day.length() == 1) {
 												StringBuffer sb = new StringBuffer();
@@ -365,15 +417,19 @@ public class ParseGEDCOM {
 											person.deat_year = year;
 											person.deat_month = numMonth;
 											person.deat_day = day;	
-											person.alive = "False";						
-											LocalDate birthday = LocalDate.of(Integer.parseInt(person.birt_year), 
-																			  Integer.parseInt(person.birt_month), 
-																			  Integer.parseInt(person.birt_day));  	
-											LocalDate deathday = LocalDate.of(Integer.parseInt(year), Integer.parseInt(numMonth), 
-													  Integer.parseInt(day));  	
-											Period diff = Period.between(birthday, deathday);
-											person.age = Integer.toString(diff.getYears());
+											person.alive = "False";	
 											
+											try {
+												LocalDate birthday = LocalDate.of(Integer.parseInt(person.birt_year), 
+																				  Integer.parseInt(person.birt_month), 
+																				  Integer.parseInt(person.birt_day));  	
+												LocalDate deathday = LocalDate.of(Integer.parseInt(year), Integer.parseInt(numMonth), 
+														  Integer.parseInt(day));  	
+												Period diff = Period.between(birthday, deathday);
+												person.age = Integer.toString(diff.getYears());
+											} catch(Exception e) {
+												System.out.println("ERROR: INDIVIDUAL: US42:"+ personInfo.get(0)+ ": Death date is invalid");
+											}
 											
 											personInfo.set(4, person.age);
 											personInfo.set(5, person.alive);
@@ -409,7 +465,7 @@ public class ParseGEDCOM {
 					}
 					
 					
-					
+					//add last parsed person
 					if(personInfo.get(0) != "0") {
 						for (int i = 0; i < 9; i++) {
 							if (personInfo.get(i) == "0") {
@@ -417,105 +473,161 @@ public class ParseGEDCOM {
 							}
 						}
 						people.add(person);
-						rowList.add(personInfo);							
+						rowList_indi.add(personInfo);							
 					}
 						
 					//sort id
-					for(int i = 0; i < rowList.size() - 1; i++) {
-						int min = Integer.parseInt(rowList.get(i).get(0).substring(1, rowList.get(i).get(0).length()));
-						int minIndex = i;
-						for (int j = i + 1; j < rowList.size(); j++) {
-							if (Integer.parseInt(rowList.get(j).get(0).substring(1, rowList.get(j).get(0).length())) < min) {									min = Integer.parseInt(rowList.get(j).get(0).substring(1, rowList.get(j).get(0).length()));
-									minIndex = j;
-							}
-					
-						}
-						List<String> temp = rowList.get(i);
-						rowList.set(i, rowList.get(minIndex));
-						rowList.set(minIndex, temp);
-					}
-						
-						
-						
-						
+					sortIndiID();
+		
 					//print individual table
-					System.out.println("Individuals");
-					Board board = new Board(350);
-			        Table table = new Table(board, 350, headerList, rowList);
-			        table.setGridMode(Table.GRID_COLUMN);
-			        //setting width and data-align of columns
-			        List<Integer> colWidthsList = Arrays.asList(10, 30, 10, 14, 10, 10, 14, 30, 30);
-			        List<Integer> colAlignList = Arrays.asList(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, 
-			        										   Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, 
-			        										   Block.DATA_CENTER);
-			        table.setColWidthsList(colWidthsList);
-			        table.setColAlignsList(colAlignList);
-			        
-			        Block tableBlock = table.tableToBlocks();
-			        board.setInitialBlock(tableBlock);
-			        board.build();
-			        String tableString = board.getPreview();
-			        System.out.println(tableString);
+					printIndividualTable();
 					
-					
-					
-					
-					//add family
+					//add last parsed family
 					if(familyInfo.get(0) != "0") {
 						for (int i = 0; i< 8; i++) {
 							if (familyInfo.get(i) == "0") {
 								familyInfo.set(i, "NA");
 							}
 						}
-						rowList2.add(familyInfo);
+						families.add(family);
+						rowList_fam.add(familyInfo);
 					}
 					
-					//sort fam id
-					for(int i = 0; i < rowList2.size() - 1; i++) {
-						int min = Integer.parseInt(rowList2.get(i).get(0).substring(1, rowList2.get(i).get(0).length()));
-						int minIndex = i;
-						for (int j = i + 1; j < rowList2.size(); j++) {
-							if (Integer.parseInt(rowList2.get(j).get(0).substring(1, rowList2.get(j).get(0).length())) < min) {
-								min = Integer.parseInt(rowList2.get(j).get(0).substring(1, rowList2.get(j).get(0).length()));
-								minIndex = j;
-							}
-							
-						}
-						List<String> temp = rowList2.get(i);
-						rowList2.set(i, rowList2.get(minIndex));
-						rowList2.set(minIndex, temp);
-					}
+					//sort family id
+					sortFamID();
 					
 					//print families table
-					System.out.println("Families");
-					Board board1 = new Board(350);
-			        Table table1 = new Table(board1, 350, headerList2, rowList2);
-			        table1.setGridMode(Table.GRID_COLUMN);
-			        //setting width and data-align of columns
-			        List<Integer> colWidthsList1 = Arrays.asList(10, 14, 10, 10, 30, 10, 30, 30);
-			        List<Integer> colAlignList1 = Arrays.asList(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, 
-			        										   Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER);
-			        table1.setColWidthsList(colWidthsList1);
-			        table1.setColAlignsList(colAlignList1);
-			        
-			        Block tableBlock1 = table1.tableToBlocks();
-			        board1.setInitialBlock(tableBlock1);
-			        board1.build();
-			        String tableString1 = board1.getPreview();
-			        System.out.println(tableString1);
-					
+					printFamilyTable();
 					fileReader.close();
+					
+					
 					break;
 				} else {
 					System.out.println("File Error");
 				}
 			} catch(Exception e) {
-				System.out.println("Invalid Input or File does not exist or file format error");
+				System.out.println("File does not exist or GEDCOM format error");
 			}
 		}
 	}
 	
-
+	/**
+	 * Sort Individual ID
+	 */
+	private void sortIndiID() {
+		for(int i = 0; i < rowList_indi.size() - 1; i++) {
+			int min = Integer.parseInt(rowList_indi.get(i).get(0).substring(1, rowList_indi.get(i).get(0).length()));
+			int minIndex = i;
+			for (int j = i + 1; j < rowList_indi.size(); j++) {
+				if (Integer.parseInt(rowList_indi.get(j).get(0).substring(1, rowList_indi.get(j).get(0).length())) < min) {									
+					min = Integer.parseInt(rowList_indi.get(j).get(0).substring(1, rowList_indi.get(j).get(0).length()));
+						minIndex = j;
+				}
+		
+			}
+			List<String> temp = rowList_indi.get(i);
+			rowList_indi.set(i, rowList_indi.get(minIndex));
+			rowList_indi.set(minIndex, temp);
+		}
+	}
+	
+	/**
+	 * Sort Family ID 
+	 */
+	private void sortFamID() {
+		for(int i = 0; i < rowList_fam.size() - 1; i++) {
+			int min = Integer.parseInt(rowList_fam.get(i).get(0).substring(1, rowList_fam.get(i).get(0).length()));
+			int minIndex = i;
+			for (int j = i + 1; j < rowList_fam.size(); j++) {
+				if (Integer.parseInt(rowList_fam.get(j).get(0).substring(1, rowList_fam.get(j).get(0).length())) < min) {
+					min = Integer.parseInt(rowList_fam.get(j).get(0).substring(1, rowList_fam.get(j).get(0).length()));
+					minIndex = j;
+				}
+				
+			}
+			List<String> temp = rowList_fam.get(i);
+			rowList_fam.set(i, rowList_fam.get(minIndex));
+			rowList_fam.set(minIndex, temp);
+		}
+	}
+	
+	/**
+	 * Project 3
+	 */
+	public void printIndividualTable() {
+		System.out.println("Individuals");
+		Board board = new Board(350);
+        Table table = new Table(board, 350, headerList_indi, rowList_indi);
+        table.setGridMode(Table.GRID_COLUMN);
+        //setting width and data-align of columns
+        List<Integer> colWidthsList = Arrays.asList(10, 30, 10, 14, 10, 10, 14, 30, 30);
+        List<Integer> colAlignList = Arrays.asList(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, 
+        										   Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, 
+        										   Block.DATA_CENTER);
+        table.setColWidthsList(colWidthsList);
+        table.setColAlignsList(colAlignList);
+        
+        Block tableBlock = table.tableToBlocks();
+        board.setInitialBlock(tableBlock);
+        board.build();
+        String tableString = board.getPreview();
+        System.out.println(tableString);
+	}
+	
+	/**
+	 * Project 3
+	 */
+	public void printFamilyTable() {
+		System.out.println("Families");
+		Board board1 = new Board(350);
+        Table table1 = new Table(board1, 350, headerList_fam, rowList_fam);
+        table1.setGridMode(Table.GRID_COLUMN);
+        //setting width and data-align of columns
+        List<Integer> colWidthsList1 = Arrays.asList(10, 14, 10, 10, 30, 10, 30, 30);
+        List<Integer> colAlignList1 = Arrays.asList(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, 
+        										   Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER);
+        table1.setColWidthsList(colWidthsList1);
+        table1.setColAlignsList(colAlignList1);
+        
+        Block tableBlock1 = table1.tableToBlocks();
+        board1.setInitialBlock(tableBlock1);
+        board1.build();
+        String tableString1 = board1.getPreview();
+        System.out.println(tableString1);
+	}
+	
+	/**
+	 * Sprint 1: US 29, list deceased
+	 */
+	public void printDeathPeople() {	
+		for (int i = 0; i < people.size(); i++) {
+			List<String> deathPerson = new ArrayList<>(Arrays.asList("0","0","0"));
+			if (people.get(i).alive.equals("False")) {
+				deathPerson.set(0, people.get(i).id_indi);
+				deathPerson.set(1, people.get(i).name);
+				deathPerson.set(2, people.get(i).deat_year+"-"+ people.get(i).deat_month+"-"+ people.get(i).deat_day);
+				rowList_death.add(deathPerson);
+			}
+		}
+		
+		System.out.println("Deceased");
+		Board board2 = new Board(350);
+        Table table2 = new Table(board2, 350, headerList_death, rowList_death);
+        table2.setGridMode(Table.GRID_COLUMN);
+        //setting width and data-align of columns
+        List<Integer> colWidthsList2 = Arrays.asList(10, 30, 14);
+        List<Integer> colAlignList2 = Arrays.asList(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER);
+        table2.setColWidthsList(colWidthsList2);
+        table2.setColAlignsList(colAlignList2);
+        
+        Block tableBlock2 = table2.tableToBlocks();
+        board2.setInitialBlock(tableBlock2);
+        board2.build();
+        String tableString1 = board2.getPreview();
+        System.out.println(tableString1);
+	}
+	
+	
 
 	/**
 	 * For convert letter month to number month
