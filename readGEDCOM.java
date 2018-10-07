@@ -8,6 +8,8 @@ public class readGEDCOM {
 		ParseGEDCOM parseFile = new ParseGEDCOM();
 		try {
 			parseFile.parse();
+			//sprint 1: US 29: List deceased
+			parseFile.printDeathPeople();
 		} catch (IOException e) {
 			
 			e.printStackTrace();

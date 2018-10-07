@@ -14,14 +14,7 @@ public class Person {
 	public String deat_month;
 	public String deat_day;
 	
-	public String age;
-
-//	public boolean marr;
-//	public int marr_year;
-//	public int marr_month;
-//	public int marr_day;	
-	
-	
+	public String age;	
 	
 	public Person() {
 		this.id_indi = "NA";
