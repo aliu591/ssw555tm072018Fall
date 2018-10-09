@@ -12,17 +12,23 @@ import java.util.*;
 public class ParseGEDCOM {
 	private List<String> headerList_indi;    	//table header for indi
 	private List<String> headerList_fam;		//table header for fam
-	private List <String> headerList_death;		//table header for deceased
 	private List<String> personInfo;
 	private List<String> familyInfo;
 	private List<List<String>> rowList_indi;		//list of indi
 	private List<List<String>> rowList_fam;			//list of fam
-	private List<List<String>> rowList_death;		//list of death
+	
 	private Person person;
 	private Family family;
 	public List<Person> people = new ArrayList<>();    //List of persons with id 
 	public List<Family> families =  new ArrayList<>(); //List of families with id 
 	
+	public List<Person> getPeople(){
+		return this.people;
+	}
+	
+	public List<Family> getFamilies(){
+		return this.families;
+	}
 	
 	/**
 	 * Project 3
@@ -51,10 +57,10 @@ public class ParseGEDCOM {
 		//Tables
 		headerList_indi = Arrays.asList("ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse");
 		headerList_fam = Arrays.asList("ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children");
-		headerList_death = Arrays.asList("ID", "Name", "Death Date");
+		
 		rowList_indi = new ArrayList<>();
 		rowList_fam = new ArrayList<>();
-		rowList_death = new ArrayList<>();
+		
 		personInfo = new ArrayList<>(Arrays.asList("0","0","0","0","0","0","0","0","0"));
 		familyInfo = new ArrayList<>(Arrays.asList("0","0","0","0","0","0","0","0"));
 		StringBuffer sb_fams = null;
@@ -225,14 +231,6 @@ public class ParseGEDCOM {
 											}
 											String numMonth = convertMonth(month);
 											
-											//check if the date is valid
-											try {
-												LocalDate marryday = LocalDate.of(Integer.parseInt(year), Integer.parseInt(numMonth), 
-														  Integer.parseInt(day));
-											}catch (Exception e){
-												System.out.println("ERROR: FAMILY: US42:"+ familyInfo.get(0)+ ":Marry day is invalid");
-												throw e;
-											}
 											
 											familyInfo.set(1, year+"-" + numMonth + "-"+day);
 											family.marr_year = year;
@@ -596,38 +594,7 @@ public class ParseGEDCOM {
         System.out.println(tableString1);
 	}
 	
-	/**
-	 * Sprint 1: US 29, list deceased
-	 */
-	public void printDeathPeople() {	
-		for (int i = 0; i < people.size(); i++) {
-			List<String> deathPerson = new ArrayList<>(Arrays.asList("0","0","0"));
-			if (people.get(i).alive.equals("False")) {
-				deathPerson.set(0, people.get(i).id_indi);
-				deathPerson.set(1, people.get(i).name);
-				deathPerson.set(2, people.get(i).deat_year+"-"+ people.get(i).deat_month+"-"+ people.get(i).deat_day);
-				rowList_death.add(deathPerson);
-			}
-		}
-		
-		System.out.println("Deceased");
-		Board board2 = new Board(350);
-        Table table2 = new Table(board2, 350, headerList_death, rowList_death);
-        table2.setGridMode(Table.GRID_COLUMN);
-        //setting width and data-align of columns
-        List<Integer> colWidthsList2 = Arrays.asList(10, 30, 14);
-        List<Integer> colAlignList2 = Arrays.asList(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER);
-        table2.setColWidthsList(colWidthsList2);
-        table2.setColAlignsList(colAlignList2);
-        
-        Block tableBlock2 = table2.tableToBlocks();
-        board2.setInitialBlock(tableBlock2);
-        board2.build();
-        String tableString1 = board2.getPreview();
-        System.out.println(tableString1);
-	}
-	
-	
+
 
 	/**
 	 * For convert letter month to number month

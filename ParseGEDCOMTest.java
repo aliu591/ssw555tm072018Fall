@@ -21,7 +21,7 @@ public class ParseGEDCOMTest {
 		ParseGEDCOM parseFile = new ParseGEDCOM();
 		try {
 			parseFile.parse();
-			parseFile.printDeathPeople();
+			
 		} catch (IOException e) {
 			System.out.println(e);
 		}
