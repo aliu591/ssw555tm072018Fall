@@ -26,24 +26,24 @@ public class CheckDate {
 				}
 			}
 			if(Integer.parseInt(hus.birt_year) < Integer.parseInt(fam.marr_year)){
-				System.out.println("Error US02: Birth of "+ hus.name +" should occur before marriage");
+				System.out.println("Error: US02: Birth of "+ hus.name +" should occur before marriage");
 			}else if(Integer.parseInt(hus.birt_year)==Integer.parseInt(fam.marr_year)){
 				if(Integer.parseInt(hus.birt_month)<Integer.parseInt(fam.marr_month)){
-					System.out.println("Error US02: Birth of "+ hus.name +" should occur before marriage");
+					System.out.println("Error: US02: Birth of "+ hus.name +" should occur before marriage");
 				}else if(Integer.parseInt(hus.birt_month)==Integer.parseInt(fam.marr_month)){
 					if(Integer.parseInt(hus.birt_day)<Integer.parseInt(fam.marr_day)){
-						System.out.println("Error US02: Birth of "+ hus.name +" should occur before marriage");
+						System.out.println("Error: US02: Birth of "+ hus.name +" should occur before marriage");
 					}
 				}
 			}
 			if(Integer.parseInt(wife.birt_year)<Integer.parseInt(fam.marr_year)){
-				System.out.println("Error US02: Birth of "+ wife.name +" should occur before marriage");
+				System.out.println("Error: US02: Birth of "+ wife.name +" should occur before marriage");
 			}else if(Integer.parseInt(wife.birt_year)==Integer.parseInt(fam.marr_year)){
 				if(Integer.parseInt(wife.birt_month)<Integer.parseInt(fam.marr_month)){
-					System.out.println("Error US02: Birth of "+ wife.name +" should occur before marriage");
+					System.out.println("Error: US02: Birth of "+ wife.name +" should occur before marriage");
 				}else if(Integer.parseInt(wife.birt_month)==Integer.parseInt(fam.marr_month)){
 					if(Integer.parseInt(wife.birt_day)<Integer.parseInt(fam.marr_day)){
-						System.out.println("Error US02: Birth of "+ wife.name +" should occur before marriage");
+						System.out.println("Error: US02: Birth of "+ wife.name +" should occur before marriage");
 					}
 				}
 			}
@@ -92,18 +92,25 @@ public class CheckDate {
 	
 	
 	/**
-	 * sprint1 US42 Reject illegitimate dates
+	 * sprint1 US42 Reject illegal dates
 	 */
-	public void US42 (List<Person> people, List<Family> families) throws Exception{
-//		for (int i = 0; i < people.size(); i++) {
-//			try {
-//				LocalDate marryday = LocalDate.of(Integer.parseInt(people.get(i).birt_year), Integer.parseInt(people.get(i).birt_month), 
-//						  Integer.parseInt(people.get(i).birt_day));
-//			}catch (Exception e){
-//				System.out.println("ERROR: FAMILY: US42:"+ + ":Birthday is invalid");
-//			}
-//		
-//		}
+	public void US42 (List<Person> people, List<Family> families) {
+		for (int i = 0; i < people.size(); i++) {
+			if (!people.get(i).birthValid)
+				System.out.println("ERROR: INDIVIDUAL: US42: "+ people.get(i).id_indi + ": Birthday date (" + people.get(i).birt_year +"-"+ people.get(i).birt_month+"-"+ people.get(i).birt_day +") is invalid");
+			
+			if (!people.get(i).deathValid)
+				System.out.println("ERROR: INDIVIDUAL: US42: "+ people.get(i).id_indi + ": Death date ("+ people.get(i).deat_year +"-"+ people.get(i).deat_month+"-"+ people.get(i).deat_day +") is invalid");
+		}
+		
+		for (int i = 0; i < families.size(); i++) {
+			if (!families.get(i).marryDateValid)
+				System.out.println("ERROR: FAMILY: US42: "+ families.get(i).id_fam + ": Marry date ("+ families.get(i).marr_year +"-"+ families.get(i).marr_month+"-"+ families.get(i).marr_day+ ") is invalid");
+			
+			if (!families.get(i).divorceDateValid)
+				System.out.println("ERROR: FAMILY: US42: "+ families.get(i).id_fam + ": Divorce date ("+families.get(i).div_year +"-"+ families.get(i).div_month+"-"+ families.get(i).div_day+ ") is invalid");
+		}
+		
 	}
 	
 }

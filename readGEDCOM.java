@@ -15,10 +15,11 @@ public class readGEDCOM {
 			
 			people = parseFile.getPeople();
 			families = parseFile.getFamilies();
+
 			
+			printList.US29(people, families);
 			
-			//sprint 1: US 29: List deceased
-			printList.US29(people,families);
+			checkDate.US42(people, families);
 			
 			checkDate.US02(people, families);
 			checkDate.US12(people, families);
