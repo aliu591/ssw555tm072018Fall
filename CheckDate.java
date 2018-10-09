@@ -25,7 +25,7 @@ public class CheckDate {
 					wife = people.get(j);
 				}
 			}
-			if(Integer.parseInt(hus.birt_year)<Integer.parseInt(fam.marr_year)){
+			if(Integer.parseInt(hus.birt_year) < Integer.parseInt(fam.marr_year)){
 				System.out.println("Error US02: Birth of "+ hus.name +" should occur before marriage");
 			}else if(Integer.parseInt(hus.birt_year)==Integer.parseInt(fam.marr_year)){
 				if(Integer.parseInt(hus.birt_month)<Integer.parseInt(fam.marr_month)){
