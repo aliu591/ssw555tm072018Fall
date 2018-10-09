@@ -13,8 +13,12 @@ public class Person {
 	public String deat_year;
 	public String deat_month;
 	public String deat_day;
-	
 	public String age;	
+	
+	public boolean birthValid;
+	public boolean deathValid;
+	public boolean birthBeforeToday;
+	public boolean deathBeforeToday;
 	
 	public Person() {
 		this.id_indi = "NA";
@@ -29,23 +33,11 @@ public class Person {
 		this.deat_month = "NA";
 		this.deat_day = "NA";
 		this.alive = "True";
+		this.birthValid = true;
+		this.deathValid = true;
+		this.birthBeforeToday = true;
+		this.deathBeforeToday = true;
+		this.age = "NA";
 	}
 	
-	public Person(String id_indi, ArrayList<String> id_famc, ArrayList<String> id_fams, 
-				  String name, String sex, String birt_year, String birt_month, String birt_day,
-				  String deat_year, String deat_month, String deat_day) {
-			
-		this.id_indi = id_indi;
-		this.id_famc = id_famc;
-		this.id_fams = id_fams;
-		this.name = name;
-		this.sex = sex;
-		this.birt_year = birt_year;
-		this.birt_month = birt_month;
-		this.birt_day = birt_day;
-		this.deat_year = deat_year;
-		this.deat_month = deat_month;
-		this.deat_day = deat_day;
-		this.alive = "True";
-	}
 }

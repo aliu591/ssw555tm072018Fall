@@ -230,7 +230,12 @@ public class ParseGEDCOM {
 												day = sb.toString();
 											}
 											String numMonth = convertMonth(month);
-											
+											try {   
+												LocalDate birthday = LocalDate.of(Integer.parseInt(year), Integer.parseInt(numMonth), 
+																				  Integer.parseInt(day));  
+											} catch (Exception e) {
+												family.marryDateValid = false;
+											}
 											
 											familyInfo.set(1, year+"-" + numMonth + "-"+day);
 											family.marr_year = year;
@@ -264,14 +269,12 @@ public class ParseGEDCOM {
 												day = sb.toString();
 											}
 											String numMonth = convertMonth(month);
-													
-											//check if the date is valid
-											try {
-												LocalDate divorceday = LocalDate.of(Integer.parseInt(year), Integer.parseInt(numMonth), 
-														  Integer.parseInt(day));
-											}catch (Exception e){
-												System.out.println("ERROR: FAMILY: US42:" + familyInfo.get(0)+ ": Divorced day is invalid");
-												throw e;
+											
+											try {   
+												LocalDate birthday = LocalDate.of(Integer.parseInt(year), Integer.parseInt(numMonth), 
+																				  Integer.parseInt(day));  
+											} catch (Exception e) {
+												family.divorceDateValid = false;
 											}
 											
 											familyInfo.set(2, year+"-" + numMonth + "-"+day);
@@ -293,11 +296,7 @@ public class ParseGEDCOM {
 											familyInfo.set(7, "{"+ sb_chil.toString() + "}");
 										}
 									}
-									
-//									if (tag.equals("0 TRLR")) {
-//										
-//									}
-									
+
 									//individual tag 
 									if (tag.equals("1 NAME")) {
 										person.name = str.substring(7);
@@ -342,15 +341,14 @@ public class ParseGEDCOM {
 											personInfo.set(3, person.birt_year+"-"+person.birt_month+"-"+person.birt_day);
 											
 											//calculate the age
-											try {
-												LocalDate today = LocalDate.now();                        
+											LocalDate today = LocalDate.now();     
+											try {   
 												LocalDate birthday = LocalDate.of(Integer.parseInt(year), Integer.parseInt(numMonth), 
 																				  Integer.parseInt(day));  
 												Period diff = Period.between(birthday, today);
 												person.age = Integer.toString(diff.getYears());
 											} catch (Exception e){
-												System.out.println("ERROR: INDIVIDUAL: US42:"+ personInfo.get(0)+ ": Birthday is invalid");
-												throw e;
+												person.birthValid = false;
 											}
 											
 											personInfo.set(4, person.age);
@@ -426,7 +424,7 @@ public class ParseGEDCOM {
 												Period diff = Period.between(birthday, deathday);
 												person.age = Integer.toString(diff.getYears());
 											} catch(Exception e) {
-												System.out.println("ERROR: INDIVIDUAL: US42:"+ personInfo.get(0)+ ": Death date is invalid");
+												person.deathValid = false;
 											}
 											
 											personInfo.set(4, person.age);

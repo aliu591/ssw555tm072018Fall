@@ -7,13 +7,14 @@ import wagu.Board;
 import wagu.Table;
 
 public class PrintList {
+	public List <String> headerList_death = Arrays.asList("ID", "Name", "Death Date");;		//table header for deceased
+	public List<List<String>> rowList_death = new ArrayList<>();;		//list of death
 	
 	/**
 	 * Sprint 1: US 29, list deceased
 	 */
 	public void US29(List<Person> people, List<Family> families) {	
-		List <String> headerList_death = Arrays.asList("ID", "Name", "Death Date");;		//table header for deceased
-		List<List<String>> rowList_death = new ArrayList<>();;		//list of death
+		
 		for (int i = 0; i < people.size(); i++) {
 			List<String> deathPerson = new ArrayList<>(Arrays.asList("0","0","0"));
 			if (people.get(i).alive.equals("False")) {

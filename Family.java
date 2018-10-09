@@ -14,6 +14,11 @@ public class Family {
 	public String div_month;
 	public String div_day;
 	
+	public boolean marryDateValid;
+	public boolean divorceDateValid;
+	public boolean marryBeforeToday;
+	public boolean divorceBeforeToday;
+	
 	public Family() {
 		this.id_fam = "NA";
 		this.id_husband = "NA";
@@ -27,5 +32,9 @@ public class Family {
 		this.div_year = "NA";
 		this.div_month = "NA";
 		this.div_day = "NA";
+		this.marryDateValid = true;
+		this.divorceDateValid = true;
+		this.marryBeforeToday = true;
+		this.divorceBeforeToday = true;
 	}
 }
