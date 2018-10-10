@@ -1,3 +1,4 @@
+package sprint1;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
