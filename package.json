@@ -1,0 +1,6 @@
+{
+    "scripts":{
+        "build": "javac *.java",
+        "start": "java readGEDCOM"
+    }
+}
