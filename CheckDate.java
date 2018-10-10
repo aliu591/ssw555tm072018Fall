@@ -130,11 +130,11 @@ public class CheckDate {
             }
             //divorce before today
             if (!families.get(i).marryBeforeToday) {
-                System.out.println("ERROR: FAMILY: US1: " + families.get(i).id_fam + ": Marriage date  " + families.get(i).marr_year
+                System.out.println("ERROR: FAMILY: US1: " + families.get(i).id_fam + ": Marriage date (" + families.get(i).marr_year
                         + "-" + families.get(i).marr_month + "-" + families.get(i).marr_day + ") occurs in the future.");
             }
             if (!families.get(i).divorceBeforeToday) {
-                System.out.println("ERROR: FAMILY: US1: " + families.get(i).id_fam + ": Divorce date  " + families.get(i).div_year
+                System.out.println("ERROR: FAMILY: US1: " + families.get(i).id_fam + ": Divorce date (" + families.get(i).div_year
                         + "-" + families.get(i).div_month + "-" + families.get(i).div_day + ") occurs in the future.");
             }
         }
@@ -144,11 +144,11 @@ public class CheckDate {
                         Integer.parseInt(people.get(i).birt_day));
                 people.get(i).birthBeforeToday = !birthday.isAfter(today);
             }
-            //bitth before today
+            //birth before today
             if (people.get(i).deathValid) {
                 LocalDate deathday = LocalDate.of(Integer.parseInt(people.get(i).deat_year), Integer.parseInt(people.get(i).deat_month),
                         Integer.parseInt(people.get(i).deat_day));
-                people.get(i).birthBeforeToday = !deathday.isAfter(today);
+                people.get(i).deathBeforeToday = !deathday.isAfter(today);
             }
             //death before today
             if (!people.get(i).birthBeforeToday)
@@ -175,7 +175,7 @@ public class CheckDate {
                                 Integer.parseInt(families.get(i).marr_month), Integer.parseInt(families.get(i).marr_day));
                         int age = birthday.until(marrday).getYears();
                         if (age < 14) {
-                            System.out.println("ERROR: FAMILY: US10: " + people.get(i).id_indi + ": Marriage before 14.");
+                            System.out.println("ERROR: FAMILY: US10: " + people.get(j).id_indi + ": Marriage before 14.");
                         }
                     }//husband wife
                 }
