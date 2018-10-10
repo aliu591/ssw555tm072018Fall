@@ -23,6 +23,9 @@ public class readGEDCOM {
 			
 			checkDate.US02(people, families);
 			checkDate.US12(people, families);
+
+			checkDate.US1(people, families);
+			checkDate.US10(people, families);
 			
 		} catch (IOException e) {
 			
