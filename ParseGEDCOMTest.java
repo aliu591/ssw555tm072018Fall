@@ -1,4 +1,3 @@
-package sprint1;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
@@ -12,17 +11,6 @@ public class ParseGEDCOMTest {
 		ParseGEDCOM parseFile = new ParseGEDCOM();
 		try {
 			parseFile.parse();
-		} catch (IOException e) {
-			System.out.println(e);
-		}
-	}
-
-	@Test
-	public void testPrintDeathPeople() {
-		ParseGEDCOM parseFile = new ParseGEDCOM();
-		try {
-			parseFile.parse();
-			
 		} catch (IOException e) {
 			System.out.println(e);
 		}

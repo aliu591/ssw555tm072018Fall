@@ -1,9 +1,4 @@
-package sprint1;
 import static org.junit.Assert.*;
-
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +7,7 @@ import org.junit.Test;
 public class PrintListTest {
 
 	@Test
-	public void testUS29() {
+	public void testUS29() { 
 		List<Person> people = new ArrayList<>();    
 		List<Family> families = new ArrayList<>();    
 		Person person1 = new Person();  //wrong date

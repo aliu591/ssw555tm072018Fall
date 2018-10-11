@@ -1,4 +1,3 @@
-package sprint1;
 import wagu.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -67,7 +66,6 @@ public class ParseGEDCOM {
 		StringBuffer sb_fams = null;
 		StringBuffer sb_famc = null;
 		StringBuffer sb_chil = null;
-		boolean addIndi = true;
 		boolean firstAddIndi = false;
 		boolean firstAddFam = false;
 		
@@ -593,7 +591,6 @@ public class ParseGEDCOM {
         System.out.println(tableString1);
 	}
 	
-
 
 	/**
 	 * For convert letter month to number month
