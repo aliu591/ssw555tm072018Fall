@@ -231,7 +231,7 @@ public class CheckDateTest {
 		//for println
 		String separator = System.getProperty("line.separator");
 		assertEquals("ERROR: FAMILY: US12: F1: wife I2 should be less than 60 years older than her children I4"+ separator
-				+ "ERROR: FAMILY: US12: F1: husband I1 should be less than 80 years older than her children I4"+ separator, os.toString());
+				+ "ERROR: FAMILY: US12: F1: husband I1 should be less than 80 years older than his children I4"+ separator, os.toString());
 		
 		System.setOut(originalOut);
 	}
