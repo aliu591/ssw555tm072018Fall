@@ -48,7 +48,6 @@ public class CheckDate {
         }else{
         	System.out.println("Error: the marriage date is not vaild");}
         }
-
     }
 
 
@@ -185,6 +184,23 @@ public class CheckDate {
                 }
             }
         }
+    }
+    
+    /**
+     * sprint2 US07 less than 150 years old
+     */
+    public void US07(List<Person> people) {
+    	for (Person person: people) {
+    		if (person.birthValid) {
+    			if (person.alive.equals("True") && Integer.parseInt(person.age) >= 150) {
+    				System.out.println("ERROR: INDIVIDUAL: US07: " + person.id_indi + ": More than 150 years old.");
+    			}
+    			
+    			if (person.alive.equals("False") && Integer.parseInt(person.age) >= 150 ) {
+    				System.out.println("ERROR: INDIVIDUAL: US07: " + person.id_indi + ": More than 150 years old.");
+    			}
+    		}
+    	}
     }
 
 

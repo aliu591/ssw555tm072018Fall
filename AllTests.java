@@ -3,7 +3,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ ParseGEDCOMTest.class, CheckDate.class, PrintList.class })
+@SuiteClasses({ ParseGEDCOMTest.class, CheckDateTest.class, PrintListTest.class, CheckPersonInfoTest.class })
 public class AllTests {
 
 }

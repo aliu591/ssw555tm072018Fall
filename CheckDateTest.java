@@ -305,5 +305,49 @@ public class CheckDateTest {
 		
 		System.setOut(originalOut);
 	}
+	
+	
+	@Test
+	public void testUS07() {
+		List<Person> people = new ArrayList<>();    
+		Person person1 = new Person();  
+		Person person2 = new Person();	
+		Person person3 = new Person();	
+		Person person4 = new Person();	
+
+		person1.id_indi = "I1";	//live wrong
+		person2.id_indi = "I2";	//death wrong
+		person3.id_indi = "I3"; //live right
+		person4.id_indi = "I4"; //death right
+				
+		person1.age = "151";
+		person2.age = "151";
+		person2.alive = "False";
+		person3.age = "50";
+		person4.age = "49";
+		person4.alive = "death";
+		
+		people.add(person1);
+		people.add(person2);
+		people.add(person3);
+		people.add(person4);
+		
+		//for capturing the system.out.println
+		PrintStream originalOut = System.out;
+		OutputStream os = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(os);
+		System.setOut(ps);
+		
+		CheckDate checkDate = new CheckDate();
+		checkDate.US07(people);
+		
+		//for println
+		String separator = System.getProperty("line.separator");
+		assertEquals("ERROR: INDIVIDUAL: US07: I1: More than 150 years old."+ separator 
+				   + "ERROR: INDIVIDUAL: US07: I2: More than 150 years old."+ separator, os.toString());
+		System.setOut(originalOut);
+		
+	}
+	
 
 }
