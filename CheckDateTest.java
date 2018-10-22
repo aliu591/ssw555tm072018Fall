@@ -9,6 +9,68 @@ import org.junit.Test;
 
 public class CheckDateTest {
 	@Test
+	public void testUS03() throws Exception {
+		List<Person> people = new ArrayList<>();
+		Person person1 = new Person();
+		Person person2 = new Person();
+		Person person3 = new Person();
+		Person person4 = new Person();
+
+		person1.id_indi = "I1";	//right
+		person2.id_indi = "I2";	//wrong
+		person3.id_indi = "I3"; //wrong for month
+		person4.id_indi = "I4"; //death for day
+
+		person1.birt_year = "1999";
+		person1.birt_month = "07";
+		person1.birt_day = "05";
+		person2.birt_year = "1999";
+		person2.birt_month = "07";
+		person2.birt_day = "01";
+		person3.birt_year = "1999";
+		person3.birt_month = "07";
+		person3.birt_day = "01";
+		person4.birt_year = "1999";
+		person4.birt_month = "07";
+		person4.birt_day = "02";
+
+		person1.deat_year = "2010";
+		person1.deat_month = "07";
+		person1.deat_day = "05";
+		person2.deat_year = "1980";
+		person2.deat_month = "07";
+		person2.deat_day = "01";
+		person3.deat_year = "1999";
+		person3.deat_month = "06";
+		person3.deat_day = "01";
+		person4.deat_year = "1999";
+		person4.deat_month = "07";
+		person4.deat_day = "01";
+
+		people.add(person1);
+		people.add(person2);
+		people.add(person3);
+		people.add(person4);
+
+		//for capturing the system.out.println
+		PrintStream originalOut = System.out;
+		OutputStream os = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(os);
+		System.setOut(ps);
+
+		CheckDate checkDate = new CheckDate();
+		checkDate.US03(people);
+
+		//for println
+		String separator = System.getProperty("line.separator");
+		assertEquals("ERROR: INDIVIDUAL: US03: I2: Birthday date (1999-07-01) is after Death date (1980-07-01)."+ separator
+				+ "ERROR: INDIVIDUAL: US03: I3: Birthday date (1999-07-01) is after Death date (1999-06-01)."+ separator
+				+"ERROR: INDIVIDUAL: US03: I4: Birthday date (1999-07-02) is after Death date (1999-07-01)."+ separator
+				, os.toString());
+		System.setOut(originalOut);
+	}
+
+	@Test
     public void testUS01() throws Exception {
         List<Person> people = new ArrayList<>();
         List<Family> families = new ArrayList<>();

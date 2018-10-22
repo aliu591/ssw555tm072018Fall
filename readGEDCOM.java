@@ -29,7 +29,9 @@ public class readGEDCOM {
 			//SPRINT2
 			checkDate.US07(people);
 			checkPersonInfo.US23(people);
-			
+
+			checkDate.US03(people);
+			checkPersonInfo.US21(people,families);
 		} catch (IOException e) {
 			
 			e.printStackTrace();
