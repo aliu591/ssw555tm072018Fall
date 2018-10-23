@@ -1,3 +1,4 @@
+package sprint2;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +26,11 @@ public class PrintListTest {
 		people.add(person2);
 				
 		PrintList printList = new PrintList();
-		printList.US29(people, families);
+		List<List<String>> list = printList.US29(people, families);
 		
-		assertEquals(printList.rowList_death.get(0).get(0), "I1" );
-		assertEquals(printList.rowList_death.get(0).get(1), "NA" );
-		assertEquals(printList.rowList_death.get(0).get(2), "2000-07-45" );
+		assertEquals(list.get(0).get(0), "I1" );
+		assertEquals(list.get(0).get(1), "NA" );
+		assertEquals(list.get(0).get(2), "2000-07-45" );
 
 	}
 

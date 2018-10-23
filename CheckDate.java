@@ -1,3 +1,4 @@
+package sprint2;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
@@ -22,33 +23,33 @@ public class CheckDate {
                     wife = people.get(j);
                 }
             }
-            if(fam.marryDateValid){
-            if (Integer.parseInt(hus.birt_year) > Integer.parseInt(fam.marr_year)) {
-                System.out.println("ERROR: FAMILY: US02: "+fam.id_fam+": Husband's birth date "+hus.birt_year+"-"+hus.birt_month+"-"+hus.birt_day+" after marriage date "+fam.marr_year+"-"+fam.marr_month+"-"+fam.marr_day);
-            } else if (Integer.parseInt(hus.birt_year) == Integer.parseInt(fam.marr_year)) {
-                if (Integer.parseInt(hus.birt_month) > Integer.parseInt(fam.marr_month)) {
-                    System.out.println("ERROR: FAMILY: US02: "+fam.id_fam+": Husband's birth date "+hus.birt_year+"-"+hus.birt_month+"-"+hus.birt_day+" after marriage date "+fam.marr_year+"-"+fam.marr_month+"-"+fam.marr_day);
-                } else if (Integer.parseInt(hus.birt_month) == Integer.parseInt(fam.marr_month)) {
-                    if (Integer.parseInt(hus.birt_day) > Integer.parseInt(fam.marr_day)) {
-                    	System.out.println("ERROR: FAMILY: US02: "+fam.id_fam+": Husband's birth date "+hus.birt_year+"-"+hus.birt_month+"-"+hus.birt_day+" after marriage date "+fam.marr_year+"-"+fam.marr_month+"-"+fam.marr_day);
+            if (fam.marryDateValid) {
+                if (Integer.parseInt(hus.birt_year) > Integer.parseInt(fam.marr_year)) {
+                    System.out.println("ERROR: FAMILY: US02: " + fam.id_fam + ": Husband's birth date " + hus.birt_year + "-" + hus.birt_month + "-" + hus.birt_day + " after marriage date " + fam.marr_year + "-" + fam.marr_month + "-" + fam.marr_day);
+                } else if (Integer.parseInt(hus.birt_year) == Integer.parseInt(fam.marr_year)) {
+                    if (Integer.parseInt(hus.birt_month) > Integer.parseInt(fam.marr_month)) {
+                        System.out.println("ERROR: FAMILY: US02: " + fam.id_fam + ": Husband's birth date " + hus.birt_year + "-" + hus.birt_month + "-" + hus.birt_day + " after marriage date " + fam.marr_year + "-" + fam.marr_month + "-" + fam.marr_day);
+                    } else if (Integer.parseInt(hus.birt_month) == Integer.parseInt(fam.marr_month)) {
+                        if (Integer.parseInt(hus.birt_day) > Integer.parseInt(fam.marr_day)) {
+                            System.out.println("ERROR: FAMILY: US02: " + fam.id_fam + ": Husband's birth date " + hus.birt_year + "-" + hus.birt_month + "-" + hus.birt_day + " after marriage date " + fam.marr_year + "-" + fam.marr_month + "-" + fam.marr_day);
+                        }
                     }
                 }
-            }
-            if (Integer.parseInt(wife.birt_year) > Integer.parseInt(fam.marr_year)) {
-            	System.out.println("ERROR: FAMILY: US02: "+fam.id_fam+": Wife's birth date "+wife.birt_year+"-"+wife.birt_month+"-"+wife.birt_day+" after marriage date "+fam.marr_year+"-"+fam.marr_month+"-"+fam.marr_day);
-            } else if (Integer.parseInt(wife.birt_year) == Integer.parseInt(fam.marr_year)) {
-                if (Integer.parseInt(wife.birt_month) > Integer.parseInt(fam.marr_month)) {
-                	System.out.println("ERROR: FAMILY: US02: "+fam.id_fam+": Wife's birth date "+wife.birt_year+"-"+wife.birt_month+"-"+wife.birt_day+" after marriage date "+fam.marr_year+"-"+fam.marr_month+"-"+fam.marr_day);
-                } else if (Integer.parseInt(wife.birt_month) == Integer.parseInt(fam.marr_month)) {
-                    if (Integer.parseInt(wife.birt_day) > Integer.parseInt(fam.marr_day)) {
-                    	System.out.println("ERROR: FAMILY: US02: "+fam.id_fam+": Wife's birth date "+wife.birt_year+"-"+wife.birt_month+"-"+wife.birt_day+" after marriage date "+fam.marr_year+"-"+fam.marr_month+"-"+fam.marr_day);
+                if (Integer.parseInt(wife.birt_year) > Integer.parseInt(fam.marr_year)) {
+                    System.out.println("ERROR: FAMILY: US02: " + fam.id_fam + ": Wife's birth date " + wife.birt_year + "-" + wife.birt_month + "-" + wife.birt_day + " after marriage date " + fam.marr_year + "-" + fam.marr_month + "-" + fam.marr_day);
+                } else if (Integer.parseInt(wife.birt_year) == Integer.parseInt(fam.marr_year)) {
+                    if (Integer.parseInt(wife.birt_month) > Integer.parseInt(fam.marr_month)) {
+                        System.out.println("ERROR: FAMILY: US02: " + fam.id_fam + ": Wife's birth date " + wife.birt_year + "-" + wife.birt_month + "-" + wife.birt_day + " after marriage date " + fam.marr_year + "-" + fam.marr_month + "-" + fam.marr_day);
+                    } else if (Integer.parseInt(wife.birt_month) == Integer.parseInt(fam.marr_month)) {
+                        if (Integer.parseInt(wife.birt_day) > Integer.parseInt(fam.marr_day)) {
+                            System.out.println("ERROR: FAMILY: US02: " + fam.id_fam + ": Wife's birth date " + wife.birt_year + "-" + wife.birt_month + "-" + wife.birt_day + " after marriage date " + fam.marr_year + "-" + fam.marr_month + "-" + fam.marr_day);
+                        }
                     }
                 }
+            } else {
+                System.out.println("Error: the marriage date is not vaild");
             }
-        }else{
-        	System.out.println("Error: the marriage date is not vaild");}
         }
-
     }
 
 
@@ -78,10 +79,10 @@ public class CheckDate {
                         }
                     }
                     if (!wife.age.equals("NA") && !child.age.equals("NA") && Integer.parseInt(wife.age) - Integer.parseInt(child.age) >= 60) {
-                        System.out.println("ERROR: FAMILY: US12: "+fam.id_fam +": wife "+ wife.id_indi + " should be less than 60 years older than her children " + child.id_indi);
+                        System.out.println("ERROR: FAMILY: US12: " + fam.id_fam + ": wife " + wife.id_indi + " should be less than 60 years older than her children " + child.id_indi);
                     }
                     if (!hus.age.equals("NA") && !child.age.equals("NA") && Integer.parseInt(hus.age) - Integer.parseInt(child.age) >= 80) {
-                        System.out.println("ERROR: FAMILY: US12: "+fam.id_fam +": husband "+hus.id_indi + " should be less than 80 years older than his children " + child.id_indi);
+                        System.out.println("ERROR: FAMILY: US12: " + fam.id_fam + ": husband " + hus.id_indi + " should be less than 80 years older than his children " + child.id_indi);
                     }
                 }
 
@@ -119,7 +120,7 @@ public class CheckDate {
     public void US01(List<Person> people, List<Family> families) {
         LocalDate today = LocalDate.now();
         for (int i = 0; i < families.size(); i++) {
-        	//marriage before today
+            //marriage before today
             if (families.get(i).marryDateValid) {
                 LocalDate marrday = LocalDate.of(Integer.parseInt(families.get(i).marr_year),
                         Integer.parseInt(families.get(i).marr_month), Integer.parseInt(families.get(i).marr_day));
@@ -142,7 +143,7 @@ public class CheckDate {
             }
         }
         for (int i = 0; i < people.size(); i++) {
-        	//birth before today
+            //birth before today
             if (people.get(i).birthValid) {
                 LocalDate birthday = LocalDate.of(Integer.parseInt(people.get(i).birt_year), Integer.parseInt(people.get(i).birt_month),
                         Integer.parseInt(people.get(i).birt_day));
@@ -154,7 +155,7 @@ public class CheckDate {
                         Integer.parseInt(people.get(i).deat_day));
                 people.get(i).deathBeforeToday = !deathday.isAfter(today);
             }
-          //print error message 
+            //print error message
             if (!people.get(i).birthBeforeToday)
                 System.out.println("ERROR: INDIVIDUAL: US1: " + people.get(i).id_indi + ": Birthday date (" + people.get(i).birt_year + "-"
                         + people.get(i).birt_month + "-" + people.get(i).birt_day + ") occurs in the future.");
@@ -186,6 +187,76 @@ public class CheckDate {
             }
         }
     }
+
+    /**
+     * sprint2 US07 less than 150 years old
+     */
+    public void US07(List<Person> people) {
+        for (Person person : people) {
+            if (person.birthValid) {
+                if (person.alive.equals("True") && Integer.parseInt(person.age) >= 150) {
+                    System.out.println("ERROR: INDIVIDUAL: US07: " + person.id_indi + ": More than 150 years old.");
+                }
+
+                if (person.alive.equals("False") && Integer.parseInt(person.age) >= 150) {
+                    System.out.println("ERROR: INDIVIDUAL: US07: " + person.id_indi + ": More than 150 years old.");
+                }
+            }
+        }
+    }
+
+    /**
+     * sprint2 US03 Birth before death
+     * Birth should occur before death of an individual
+     */
+    public void US03(List<Person> people) {
+        for (int i = 0; i < people.size(); i++) {
+            if (people.get(i).birthValid && people.get(i).deathValid) {
+                LocalDate birthday = LocalDate.of(Integer.parseInt(people.get(i).birt_year), Integer.parseInt(people.get(i).birt_month),
+                        Integer.parseInt(people.get(i).birt_day));
+                LocalDate deathday = LocalDate.of(Integer.parseInt(people.get(i).deat_year), Integer.parseInt(people.get(i).deat_month),
+                        Integer.parseInt(people.get(i).deat_day));
+                if (!deathday.isAfter(birthday)) {
+                    System.out.println("ERROR: INDIVIDUAL: US03: " + people.get(i).id_indi + ": Birthday date (" + people.get(i).birt_year + "-"
+                            + people.get(i).birt_month + "-" + people.get(i).birt_day + ") is after Death date (" + people.get(i).deat_year + "-"
+                            + people.get(i).deat_month + "-" + people.get(i).deat_day + ").");
+                }
+            }
+        }
+    }
+
+     /**
+     * sprint2 US15 There should be fewer than 15 siblings in a family
+     */
+	public void US15(List<Family> families) {
+        Family fam;
+        for (int i = 0; i < families.size(); i++) {
+               fam = families.get(i);
+               if(fam.id_children.size()>15){
+                    System.out.println("ERROR: FAMILY: US15: "+fam.id_fam+ " has more than 15 siblings");
+               }
+        }
+    }
+    
+   
+    /**
+        * sprint2 US22 All individual IDs should be unique and all family IDs should be unique
+     */
+   public void US22(List<Person> people, List<Family> families) {
+       Set<String> person = new HashSet<>();
+        for (Person name : people) {
+            if (person.add(name.id_indi) == false) {
+                System.out.println("ERROR: INDIVIDUAL: US22: individual ID " + name.id_indi + " should be unique.");
+            }
+        }
+        Set<String> family = new HashSet<>();
+        for(Family fam: families){
+            if(family.add(fam.id_fam) == false){
+                System.out.println("ERROR: Family: US22: family ID " + fam.id_fam + " should be unique.");
+            }
+        }
+
+   }
 
 
 }

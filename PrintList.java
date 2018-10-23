@@ -1,19 +1,43 @@
+package sprint2;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import wagu.Block;
 import wagu.Board;
 import wagu.Table;
 
 public class PrintList {
-	public List <String> headerList_death = Arrays.asList("ID", "Name", "Death Date");;		//table header for deceased
-	public List<List<String>> rowList_death = new ArrayList<>();;		//list of death
+
+	/**
+	 * Print table 
+	 */
+	public void printTable (List<String> header, List<List<String>> rowList, int boardSize) {
+		Board board = new Board(boardSize);
+        Table table = new Table(board, boardSize, header, rowList);
+        table.setGridMode(Table.GRID_COLUMN);
+        //setting width and data-align of columns
+        List<Integer> colWidthsList = new ArrayList<>();
+        for (int i = 0; i < header.size(); i++) {
+        	colWidthsList.add(22);
+        }
+        List<Integer> colAlignList = new ArrayList<>();
+        for (int i = 0; i < header.size(); i++) {
+        	colAlignList.add(Block.DATA_CENTER);
+        }
+        table.setColWidthsList(colWidthsList);
+        table.setColAlignsList(colAlignList);
+        
+        board.setInitialBlock(table.tableToBlocks());
+        board.build();
+        System.out.println(board.getPreview());
+	}
 	
 	/**
 	 * Sprint 1: US 29, list deceased
 	 */
-	public void US29(List<Person> people, List<Family> families) {	
+	public List<List<String>> US29(List<Person> people, List<Family> families) {	
+		List <String> headerList_death = Arrays.asList("ID", "Name", "Death Date");;		//table header for deceased
+		List<List<String>> rowList_death = new ArrayList<>();;		//list of death for print table
 		
 		for (int i = 0; i < people.size(); i++) {
 			List<String> deathPerson = new ArrayList<>(Arrays.asList("0","0","0"));
@@ -24,21 +48,8 @@ public class PrintList {
 				rowList_death.add(deathPerson);
 			}
 		}
-		
 		System.out.println("Deceased");
-		Board board2 = new Board(350);
-        Table table2 = new Table(board2, 350, headerList_death, rowList_death);
-        table2.setGridMode(Table.GRID_COLUMN);
-        //setting width and data-align of columns
-        List<Integer> colWidthsList2 = Arrays.asList(10, 30, 14);
-        List<Integer> colAlignList2 = Arrays.asList(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER);
-        table2.setColWidthsList(colWidthsList2);
-        table2.setColAlignsList(colAlignList2);
-        
-        Block tableBlock2 = table2.tableToBlocks();
-        board2.setInitialBlock(tableBlock2);
-        board2.build();
-        String tableString1 = board2.getPreview();
-        System.out.println(tableString1);
+		printTable(headerList_death, rowList_death, 530);
+		return rowList_death;
 	}
 }

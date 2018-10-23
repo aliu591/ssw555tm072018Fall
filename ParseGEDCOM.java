@@ -1,3 +1,4 @@
+package sprint2;
 import wagu.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,7 +8,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.*;
 import java.util.*;
-
 
 public class ParseGEDCOM {
 	private List<String> headerList_indi;    	//table header for indi
@@ -22,12 +22,34 @@ public class ParseGEDCOM {
 	public List<Person> people = new ArrayList<>();    //List of persons with id 
 	public List<Family> families =  new ArrayList<>(); //List of families with id 
 	
+	enum MonthLetter{
+		ZERO,JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC;
+	}
+
 	public List<Person> getPeople(){
 		return this.people;
 	}
 	
 	public List<Family> getFamilies(){
 		return this.families;
+	}
+	
+	/**
+	 * For convert letter month to number month
+	 * @param month
+	 * @return String
+	 */
+	public String convertMonth(String month) {
+		String numMonth = null;
+		try {
+			numMonth = String.valueOf(MonthLetter.valueOf(month).ordinal());
+			if (numMonth.length() == 1) {
+				numMonth = '0' + numMonth;
+			}
+		} catch (Exception e) {
+			numMonth = null;
+		}
+		return numMonth;
 	}
 	
 	/**
@@ -183,9 +205,7 @@ public class ParseGEDCOM {
 												family.name_hasband = p.name;
 												break;
 											}
-										}
-										
-										
+										}						
 									}
 									
 									if (tag.equals("1 WIFE")) {
@@ -200,7 +220,6 @@ public class ParseGEDCOM {
 												break;
 											}
 										}
-										
 									}
 									
 									if (tag.equals("1 MARR")) {
@@ -280,9 +299,7 @@ public class ParseGEDCOM {
 											family.div_year = year;
 											family.div_month = numMonth;
 											family.div_day = day;
-
-										}
-										
+										}				
 									}
 									
 									if (tag.equals("1 CHIL")) {
@@ -592,157 +609,111 @@ public class ParseGEDCOM {
 	}
 	
 
-	/**
-	 * For convert letter month to number month
-	 * @param month
-	 * @return String
-	 */
-	private String convertMonth(String month) {
-		String numMonth = null;
-		switch(month){
-		case "JAN":
-			numMonth = "01";
-			break;
-		case "FEB":
-			numMonth = "02";
-			break;
-		case "MAR":
-			numMonth = "03";
-			break;
-		case "APR":
-			numMonth = "04";
-			break;
-		case "MAY":
-			numMonth = "05";
-			break;
-		case "JUN":
-			numMonth = "06";
-			break;
-		case "JUL":
-			numMonth = "07";
-			break;
-		case "AUG":
-			numMonth = "08";
-			break;
-		case "SEP":
-			numMonth = "09";
-			break;
-		case "OCT":
-			numMonth = "10";
-			break;
-		case "NOV":
-			numMonth = "11";
-			break;
-		case "DEC":		
-			numMonth = "12";
-			break;
-		}
-		return numMonth;
-	}
-	
-	/**
-	 * Project 2
-	 * @throws IOException
-	 */
-	public void printParse() throws IOException {
-		//create a list to store known tag
-		List<String> list = new ArrayList<>(); 
-		list.add("INDI");
-		list.add("1 NAME");
-		list.add("1 SEX");
-		list.add("1 BIRT");
-		list.add("1 DEAT");
-		list.add("1 FAMC");
-		list.add("1 FAMS");
-		list.add("FAM");
-		list.add("1 MARR");
-		list.add("1 HUSB");
-		list.add("1 WIFE");
-		list.add("1 CHIL");
-		list.add("1 DIV");
-		list.add("2 DATE");
-		list.add("0 HEAD");
-		list.add("0 TRLR");
-		list.add("0 NOTE");
-		
-		while (true) {
-			BufferedReader readerOfFile = new BufferedReader(new InputStreamReader(System.in));
-			System.out.print("The name of the parsing file: " );
-			try {	
-				//get the file from current path
-				String fileName = readerOfFile.readLine();
-				URL p = ParseGEDCOM.class.getResource(fileName);
-				File f = new File(p.getFile());
-				
-				if(f.exists() && f.canRead() && f.isFile()) {
-					BufferedReader fileReader = new BufferedReader(new FileReader(f));
-					String str;
-					while((str = fileReader.readLine()) != null){
-						//print the input
-						System.out.println("--> " + str);
-						boolean check = false;
-						//check if contains the tag
-						for(String k : list) {
-							if (str.contains(k)) {
-								check = true;
-								String tag = k;
-								//corner case
-								if (tag == "INDI" || tag == "FAM") {
-									if(str.charAt(0) == '0') {
-										int index = str.indexOf(tag);
-										StringBuilder builder = new StringBuilder(str);
-										builder.delete(index - 1, index + tag.length());
-										builder.replace(1, 2, "|");
-										builder.insert(2, tag + "|Y|");
-										System.out.println("<-- " + builder.toString());
-									} else {
-										int index = str.indexOf(tag);
-										StringBuilder builder = new StringBuilder(str);
-										builder.delete(index - 1, index + tag.length());
-										builder.replace(1, 2, "|");
-										builder.insert(2, tag + "|N|");
-										System.out.println("<-- " + builder.toString());
-									}
-								} else {
-									tag = tag.substring(2, tag.length());
-									int index = str.indexOf(tag);
-									StringBuilder builder = new StringBuilder(str);
-									builder.replace(1, 2, "|");
-									builder.insert((index + tag.length()), "|Y");
-									builder.replace((index + tag.length() + 2), (index + tag.length() + 3), "|");
-									System.out.println("<-- " + builder.toString());
-								}
-								break;
-							}
-						}
 
-						//print the output for invalid tag
-						if (!check) {
-							StringBuilder builder = new StringBuilder(str);
-							builder.replace(1, 2, "|");							
-							String result = builder.toString();
-							int count = 0;
-							for (int i = 0; i < result.length(); i++) {
-								if (result.charAt(i) != ' ') {
-									if (Character.isUpperCase(result.charAt(i))) {
-										count++;
-									}
-								} else {
-									break;
-								}
-							}
-							builder.replace(2+ count, 3+count, "|N|");
-							System.out.println("<-- " + builder.toString());
-						} 	
-					}
-					fileReader.close();
-					break;
-				} else {
-					System.out.println("File Error");
-				}
-			} catch(Exception e) {
-				System.out.println("Invalid Input or File does not exist or file format error or empty line in gedcom file");
-			}
-		}
-	}
+	
+//	/**
+//	 * Project 2
+//	 * @throws IOException
+//	 */
+//	public void printParse() throws IOException {
+//		//create a list to store known tag
+//		List<String> list = new ArrayList<>(); 
+//		list.add("INDI");
+//		list.add("1 NAME");
+//		list.add("1 SEX");
+//		list.add("1 BIRT");
+//		list.add("1 DEAT");
+//		list.add("1 FAMC");
+//		list.add("1 FAMS");
+//		list.add("FAM");
+//		list.add("1 MARR");
+//		list.add("1 HUSB");
+//		list.add("1 WIFE");
+//		list.add("1 CHIL");
+//		list.add("1 DIV");
+//		list.add("2 DATE");
+//		list.add("0 HEAD");
+//		list.add("0 TRLR");
+//		list.add("0 NOTE");
+//		
+//		while (true) {
+//			BufferedReader readerOfFile = new BufferedReader(new InputStreamReader(System.in));
+//			System.out.print("The name of the parsing file: " );
+//			try {	
+//				//get the file from current path
+//				String fileName = readerOfFile.readLine();
+//				URL p = ParseGEDCOM.class.getResource(fileName);
+//				File f = new File(p.getFile());
+//				
+//				if(f.exists() && f.canRead() && f.isFile()) {
+//					BufferedReader fileReader = new BufferedReader(new FileReader(f));
+//					String str;
+//					while((str = fileReader.readLine()) != null){
+//						//print the input
+//						System.out.println("--> " + str);
+//						boolean check = false;
+//						//check if contains the tag
+//						for(String k : list) {
+//							if (str.contains(k)) {
+//								check = true;
+//								String tag = k;
+//								//corner case
+//								if (tag == "INDI" || tag == "FAM") {
+//									if(str.charAt(0) == '0') {
+//										int index = str.indexOf(tag);
+//										StringBuilder builder = new StringBuilder(str);
+//										builder.delete(index - 1, index + tag.length());
+//										builder.replace(1, 2, "|");
+//										builder.insert(2, tag + "|Y|");
+//										System.out.println("<-- " + builder.toString());
+//									} else {
+//										int index = str.indexOf(tag);
+//										StringBuilder builder = new StringBuilder(str);
+//										builder.delete(index - 1, index + tag.length());
+//										builder.replace(1, 2, "|");
+//										builder.insert(2, tag + "|N|");
+//										System.out.println("<-- " + builder.toString());
+//									}
+//								} else {
+//									tag = tag.substring(2, tag.length());
+//									int index = str.indexOf(tag);
+//									StringBuilder builder = new StringBuilder(str);
+//									builder.replace(1, 2, "|");
+//									builder.insert((index + tag.length()), "|Y");
+//									builder.replace((index + tag.length() + 2), (index + tag.length() + 3), "|");
+//									System.out.println("<-- " + builder.toString());
+//								}
+//								break;
+//							}
+//						}
+//
+//						//print the output for invalid tag
+//						if (!check) {
+//							StringBuilder builder = new StringBuilder(str);
+//							builder.replace(1, 2, "|");							
+//							String result = builder.toString();
+//							int count = 0;
+//							for (int i = 0; i < result.length(); i++) {
+//								if (result.charAt(i) != ' ') {
+//									if (Character.isUpperCase(result.charAt(i))) {
+//										count++;
+//									}
+//								} else {
+//									break;
+//								}
+//							}
+//							builder.replace(2+ count, 3+count, "|N|");
+//							System.out.println("<-- " + builder.toString());
+//						} 	
+//					}
+//					fileReader.close();
+//					break;
+//				} else {
+//					System.out.println("File Error");
+//				}
+//			} catch(Exception e) {
+//				System.out.println("Invalid Input or File does not exist or file format error or empty line in gedcom file");
+//			}
+//		}
+//	}
 }
