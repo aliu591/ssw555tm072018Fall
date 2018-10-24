@@ -32,6 +32,9 @@ public class readGEDCOM {
 
 			checkDate.US03(people);
 			checkPersonInfo.US21(people,families);
+			
+			checkPersonInfo.US15(families);
+			checkPersonInfo.US22(people, families);
 		} catch (IOException e) {
 			
 			e.printStackTrace();
