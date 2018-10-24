@@ -1,5 +1,3 @@
-package sprint2;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -193,12 +191,12 @@ public class CheckDate {
      */
     public void US07(List<Person> people) {
         for (Person person : people) {
-            if (person.birthValid) {
-                if (person.alive.equals("True") && Integer.parseInt(person.age) >= 150) {
+            if (person.birthValid && person.deathValid) {
+                if (person.alive.equals("True") && !person.birt_year.equals("NA") && Integer.parseInt(person.age) >= 150) {
                     System.out.println("ERROR: INDIVIDUAL: US07: " + person.id_indi + ": More than 150 years old.");
                 }
 
-                if (person.alive.equals("False") && Integer.parseInt(person.age) >= 150) {
+                if (person.alive.equals("False") && !person.deat_year.equals("NA") && Integer.parseInt(person.age) >= 150) {
                     System.out.println("ERROR: INDIVIDUAL: US07: " + person.id_indi + ": More than 150 years old.");
                 }
             }
@@ -211,7 +209,7 @@ public class CheckDate {
      */
     public void US03(List<Person> people) {
         for (int i = 0; i < people.size(); i++) {
-            if (people.get(i).birthValid && people.get(i).deathValid) {
+            if (people.get(i).birthValid && people.get(i).deathValid && !people.get(i).deat_year.equals("NA")) {
                 LocalDate birthday = LocalDate.of(Integer.parseInt(people.get(i).birt_year), Integer.parseInt(people.get(i).birt_month),
                         Integer.parseInt(people.get(i).birt_day));
                 LocalDate deathday = LocalDate.of(Integer.parseInt(people.get(i).deat_year), Integer.parseInt(people.get(i).deat_month),
@@ -224,39 +222,5 @@ public class CheckDate {
             }
         }
     }
-
-     /**
-     * sprint2 US15 There should be fewer than 15 siblings in a family
-     */
-	public void US15(List<Family> families) {
-        Family fam;
-        for (int i = 0; i < families.size(); i++) {
-               fam = families.get(i);
-               if(fam.id_children.size()>15){
-                    System.out.println("ERROR: FAMILY: US15: "+fam.id_fam+ " has more than 15 siblings");
-               }
-        }
-    }
-    
-   
-    /**
-        * sprint2 US22 All individual IDs should be unique and all family IDs should be unique
-     */
-   public void US22(List<Person> people, List<Family> families) {
-       Set<String> person = new HashSet<>();
-        for (Person name : people) {
-            if (person.add(name.id_indi) == false) {
-                System.out.println("ERROR: INDIVIDUAL: US22: individual ID " + name.id_indi + " should be unique.");
-            }
-        }
-        Set<String> family = new HashSet<>();
-        for(Family fam: families){
-            if(family.add(fam.id_fam) == false){
-                System.out.println("ERROR: Family: US22: family ID " + fam.id_fam + " should be unique.");
-            }
-        }
-
-   }
-
 
 }
