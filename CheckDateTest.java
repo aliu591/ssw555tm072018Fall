@@ -4,6 +4,8 @@ import java.util.*;
 import org.junit.Test;
 
 public class CheckDateTest {
+	
+	
 	@Test
 	public void testUS03() throws Exception {
 		List<Person> people = new ArrayList<>();
@@ -378,12 +380,31 @@ public class CheckDateTest {
 		person3.id_indi = "I3"; //live right
 		person4.id_indi = "I4"; //death right
 				
+		person1.birt_year = "1867";
+		person1.birt_month = "07";
+		person1.birt_day = "45";
+		person2.birt_year = "1866";
+		person2.birt_month = "07";
+		person2.birt_day = "01";
+		person2.deat_year = "2018";
+		person2.deat_month = "07";
+		person2.deat_day = "01";
+		person3.birt_year = "2000";
+		person3.birt_month = "07";
+		person3.birt_day = "45";
+		person4.birt_year = "1999";
+		person4.birt_month = "07";
+		person4.birt_day = "01";
+		person4.deat_year = "2000";
+		person4.deat_month = "07";
+		person4.deat_day = "01";
+		
 		person1.age = "151";
 		person2.age = "151";
 		person2.alive = "False";
-		person3.age = "50";
-		person4.age = "49";
-		person4.alive = "death";
+		person3.age = "18";
+		person4.age = "1";
+		person4.alive = "False";
 		
 		people.add(person1);
 		people.add(person2);
