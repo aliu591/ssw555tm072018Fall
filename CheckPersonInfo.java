@@ -70,5 +70,30 @@ public class CheckPersonInfo {
             }
         }
    }
+  
+   
+   /**
+    * sprint3 US14 No more than five siblings should be born at the same time
+    */
+   public void US14(List<Person> people, List<Family> families) {
+	   for(Family family: families) {
+		   if (family.children.size() > 5) {
+			   int count = 0;
+			   for (int i = 0; i < family.children.size() - 1; i++) {
+				   for (int j = i + 1; j < family.children.size() ; j++) {
+					   if (family.children.get(i).birt_year == family.children.get(j).birt_year 
+						&& family.children.get(i).birt_month == family.children.get(j).birt_month
+						&& family.children.get(i).birt_day == family.children.get(j).birt_day) {
+						   count++;
+					   }
+				   }
+			   }
+			   if (count > 5) {
+				   System.out.println("ERROR: Family: US14: family ID " + family.id_fam + " has more than five sibling born at the same time.");
+			   }
+		   } 
+	   }
+   }
+    
 }
 

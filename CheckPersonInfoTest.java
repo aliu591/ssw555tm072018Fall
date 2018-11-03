@@ -229,4 +229,57 @@ public class CheckPersonInfoTest {
 		System.setOut(originalOut);
 	}
 
+	
+	@Test
+	public void testUS14() {
+		List<Person> people = new ArrayList<>();    
+		List<Family> families =  new ArrayList<>(); 
+		Person person1 = new Person();  
+		Person person2 = new Person();
+		Person person3 = new Person();  
+		Person person4 = new Person();	
+		Person person5 = new Person();	
+		Person person6 = new Person();	
+		Family family1 = new Family();
+		family1.id_fam = "F1";
+		person1.birt_year = "1990";
+		person1.birt_month = "06";
+		person1.birt_day = "15";
+		person2.birt_year = "1990";
+		person2.birt_month = "06";
+		person2.birt_day = "15";
+		person3.birt_year = "1990";
+		person3.birt_month = "06";
+		person3.birt_day = "15";
+		person4.birt_year = "1990";
+		person4.birt_month = "06";
+		person4.birt_day = "15";
+		person5.birt_year = "1990";
+		person5.birt_month = "06";
+		person5.birt_day = "15";
+		person6.birt_year = "1990";
+		person6.birt_month = "06";
+		person6.birt_day = "15";
+		
+		family1.children.add(person1);
+		family1.children.add(person2);
+		family1.children.add(person3);
+		family1.children.add(person4);
+		family1.children.add(person5);
+		family1.children.add(person6);
+		families.add(family1);
+		
+		PrintStream originalOut = System.out;
+		OutputStream os = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(os);
+		System.setOut(ps);
+		
+		
+		CheckPersonInfo checkInfo = new CheckPersonInfo();
+		checkInfo.US14(people,families);
+		//for println
+		String separator = System.getProperty("line.separator");
+		assertEquals("ERROR: Family: US14: family ID F1 has more than five sibling born at the same time."+ separator , os.toString());
+		System.setOut(originalOut);
+	}
 }

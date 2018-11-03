@@ -202,6 +202,7 @@ public class ParseGEDCOM {
 											if (p.id_indi.equals(husb)) {
 												familyInfo.set(4, p.name);
 												family.name_hasband = p.name;
+												family.husband = p;
 												break;
 											}
 										}						
@@ -216,6 +217,7 @@ public class ParseGEDCOM {
 											if (p.id_indi.equals(wife)) {
 												familyInfo.set(6, p.name);
 												family.name_wife = p.name;
+												family.wife = p;
 												break;
 											}
 										}
@@ -303,6 +305,13 @@ public class ParseGEDCOM {
 									
 									if (tag.equals("1 CHIL")) {
 										family.id_children.add(str.substring(7));
+										//find the name with id
+										for (Person p : people) {
+											if (p.id_indi.equals(str.substring(7))) {
+												family.children.add(p);
+												break;
+											}
+										}
 										if(familyInfo.get(7) == "0") {
 											sb_chil.append("'"+ str.substring(7)+"'");
 											familyInfo.set(7, "{"+ sb_chil.toString() + "}");

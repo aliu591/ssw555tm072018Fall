@@ -36,7 +36,7 @@ public class PrintList {
 	 */
 	public List<List<String>> US29(List<Person> people, List<Family> families) {	
 		List <String> headerList_death = Arrays.asList("ID", "Name", "Death Date");;		//table header for deceased
-		List<List<String>> rowList_death = new ArrayList<>();;		//list of death for print table
+		List<List<String>> rowList_death = new ArrayList<>();		//list of death for print table
 		
 		for (int i = 0; i < people.size(); i++) {
 			List<String> deathPerson = new ArrayList<>(Arrays.asList("0","0","0"));
@@ -47,8 +47,44 @@ public class PrintList {
 				rowList_death.add(deathPerson);
 			}
 		}
-		System.out.println("Deceased");
-		printTable(headerList_death, rowList_death, 530);
+		if (rowList_death.size() > 0) {
+			System.out.println("Deceased");
+			printTable(headerList_death, rowList_death, 530);
+		} else {
+			System.out.println("No Deceased In the GEDCOM");
+		}
+		
 		return rowList_death;
 	}
+	
+	/**
+	 * Sprint 3: US 33, list orphans
+	 */
+	public List<List<String>> US33(List<Person> people, List<Family> families) {
+		List <String> headerList_orphans = Arrays.asList("ID", "Name", "Family ID");;	//table header for orphans
+		List<List<String>> rowList_orphans = new ArrayList<>();							//list of orphans for print table
+		
+		for (int i = 0; i < families.size(); i++) {
+			List<String> orphans = new ArrayList<>(Arrays.asList("0","0","0"));
+			
+			if (families.get(i).husband.alive.equals("False") && families.get(i).wife.alive.equals("False") ) {
+				for (Person p: families.get(i).children) {
+					if (p.alive.equals("True") && Integer.parseInt(p.age) < 18) {
+						orphans.set(0, p.id_indi);
+						orphans.set(1, p.name);
+						orphans.set(2, families.get(i).id_fam);
+						rowList_orphans.add(orphans);
+					}
+				}
+			}
+		}
+		if (rowList_orphans.size() > 0) {
+			System.out.println("Orphans");
+			printTable(headerList_orphans, rowList_orphans, 530);
+		} else {
+			System.out.println("No Orphans In the GEDCOM");
+		}
+		return rowList_orphans;
+	}
+	
 }
