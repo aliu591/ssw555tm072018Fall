@@ -14,6 +14,10 @@ public class Family {
 	public String div_month;
 	public String div_day;
 	
+	public Person wife;
+	public Person husband;
+	public ArrayList<Person> children;
+	
 	public boolean marryDateValid;
 	public boolean divorceDateValid;
 	public boolean marryBeforeToday;
@@ -36,5 +40,8 @@ public class Family {
 		this.divorceDateValid = true;
 		this.marryBeforeToday = true;
 		this.divorceBeforeToday = true;
+		this.wife = null;
+		this.husband = null;
+		this.children = new ArrayList<Person>();
 	}
 }
