@@ -1,5 +1,4 @@
-package sprint2;
-
+package sprint3;
 import java.io.IOException;
 import java.util.*;
 import wagu.*;
@@ -19,20 +18,32 @@ public class readGEDCOM {
 			people = parseFile.getPeople();
 			families = parseFile.getFamilies();
 
-			//SPRINT 1
-//			printList.US29(people, families);
-//			checkDate.US42(people, families);
-//			checkDate.US02(people, families);
-//			checkDate.US12(people, families);
-//			checkDate.US01(people, families);
-//			checkDate.US10(people, families);
 			
-			//SPRINT2
-			checkDate.US07(people);
-			checkPersonInfo.US23(people);
-
+			//sprint 3
+			printList.US33(people, families);
+			printList.US30(people, families);
+			printList.US27(people, families);
+			
+			checkPersonInfo.US14(people, families);
+			checkPersonInfo.US18(people, families);
+			
+			
+			
+			//SPRINT 1 & SPRINT2
+			printList.US29(people, families);
+//		
+			checkDate.US01(people, families);
+			checkDate.US02(people, families);
 			checkDate.US03(people);
+			checkDate.US07(people);
+			checkDate.US10(people, families);
+			checkDate.US12(people, families);
+			checkPersonInfo.US15(families);
 			checkPersonInfo.US21(people,families);
+			checkPersonInfo.US22(people, families);
+			checkPersonInfo.US23(people);
+			checkDate.US42(people, families);
+	
 		} catch (IOException e) {
 			
 			e.printStackTrace();
