@@ -1,3 +1,6 @@
+package sprint3;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -117,4 +120,64 @@ public class PrintList {
         return rowList_living_married;
     }
 
+    /**
+     * sprint3 US27 Include person's current age when listing individuals
+     */
+    public List<List<String>> US27(List<Person> people,List<Family> families) {
+    	 List<String> person_info = Arrays.asList("ID", "Name","Gender", "Birthday", "Age","Alive","Death","Is child of family","Is spouse of family");
+    	 List<List<String>> rowList_person = new ArrayList<>();
+    	 for (int i = 0; i < people.size(); i++) {
+    		 if(people.get(i).alive=="False"){
+				try {
+					LocalDate birthday = LocalDate.of(Integer.parseInt(people.get(i).birt_year), 
+													  Integer.parseInt(people.get(i).birt_month), 
+													  Integer.parseInt(people.get(i).birt_day));  	
+					LocalDate deathday = LocalDate.of(Integer.parseInt(people.get(i).deat_year), Integer.parseInt(people.get(i).deat_month), 
+							  Integer.parseInt(people.get(i).deat_day));  	
+					Period diff = Period.between(birthday, deathday);
+					people.get(i).age = Integer.toString(diff.getYears());
+				} catch(Exception e) {
+					people.get(i).deathValid = false;
+				}
+			}else{
+				LocalDate today = LocalDate.now();     
+				try {   
+					LocalDate birthday = LocalDate.of(Integer.parseInt(people.get(i).birt_year), Integer.parseInt(people.get(i).birt_month), Integer.parseInt(people.get(i).birt_day)); 
+					Period diff = Period.between(birthday, today);
+					people.get(i).age = Integer.toString(diff.getYears());
+				} catch (Exception e){
+					people.get(i).birthValid = false;
+				}
+			}
+    		 List<String> person = new ArrayList<>(Arrays.asList("0", "0", "0","0","0","0","0","0","0"));
+            	 person.set(0, people.get(i).id_indi);
+            	 person.set(1, people.get(i).name);
+            	 person.set(2, people.get(i).sex);
+            	 person.set(3, people.get(i).birt_year + "-" + people.get(i).birt_month + "-" + people.get(i).birt_day);
+            	 person.set(4, people.get(i).age);
+            	 person.set(5, people.get(i).alive);
+            	 if(people.get(i).alive=="True"){
+            		 person.set(6, "NA");
+            	 }else{
+            		 person.set(6, people.get(i).deat_year+"-"+people.get(i).deat_month+"-"+people.get(i).deat_day);
+            	 }
+            	 if(people.get(i).id_famc.size()!=0){
+            		 person.set(7, people.get(i).id_famc.toString());
+            	 }
+            	 if(people.get(i).id_fams.size()!=0){
+            		 person.set(8, people.get(i).id_fams.toString());
+            	 }
+            	 for (int k = 0; k < 9; k++) {
+						if (person.get(k) == "0") {
+							person.set(k, "NA");
+						}
+            	 }
+             	 rowList_person.add(person);
+    	 }
+    	 System.out.println("individuals information: ");
+         printTable(person_info, rowList_person, 530);
+
+    	 return rowList_person;
+    }
+    
 }

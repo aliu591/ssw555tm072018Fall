@@ -1,4 +1,4 @@
-
+package sprint3;
 import java.io.IOException;
 import java.util.*;
 import wagu.*;
@@ -22,6 +22,7 @@ public class readGEDCOM {
 			//sprint 3
 			printList.US33(people, families);
 			printList.US30(people, families);
+			printList.US27(people, families);
 			
 			checkPersonInfo.US14(people, families);
 			checkPersonInfo.US18(people, families);
@@ -29,7 +30,7 @@ public class readGEDCOM {
 			
 			
 			//SPRINT 1 & SPRINT2
-//			printList.US29(people, families);
+			printList.US29(people, families);
 //		
 			checkDate.US01(people, families);
 			checkDate.US02(people, families);

@@ -1,3 +1,4 @@
+package sprint3;
 import java.util.*;
 
 public class CheckPersonInfo {
@@ -101,29 +102,46 @@ public class CheckPersonInfo {
      * sprint3 US18 Siblings should not marry one another
      */
     public void US18(List<Person> people, List<Family> families) {
-        List<List<String>> spouse_family = new ArrayList<>();
-        List<List<String>> siblings_family = new ArrayList<>();
-        for (Family family : families) {
-            List<String> spouse = new ArrayList<>();
-            spouse.add(family.id_husband);
-            spouse.add(family.id_wife);
-            if (family.id_children.size() > 1) {
-                List<String> siblings = new ArrayList<>();
-                for (int i = 0; i < family.id_children.size(); i++) {
-                    siblings.add(family.id_children.get(i));
-                }
-                siblings_family.add(siblings);
-            }
-            spouse_family.add(spouse);
-        }
-        for (int i = 0; i < spouse_family.size(); i++) {
-            for (int j = 0; j < siblings_family.size(); j++) {
-                if (siblings_family.get(j).containsAll(spouse_family.get(i))) {
-                    for (int x = 0; x < spouse_family.get(i).size(); x++)
-                        System.out.println("ERROR: Individual: US18: Individual ID " + spouse_family.get(i).get(x)
-                                + " married with other sibling in family");
+        for (Person person : people) {
+            for (int i = 0; i < person.id_fams.size(); i++) {
+                for (int j = 0; j < person.id_famc.size(); j++) {
+                    if (person.id_fams.get(i).equals(person.id_famc.get(j))) {
+                        System.out.println("ERROR: Individual: US18: Individual ID " + person.id_indi+ " married with other sibling in family");
+                    }
                 }
             }
         }
     }
+    
+	 /**
+     * sprint3 US25 No more than one child with the same name and birth date should appear in a family
+  */
+	
+	public void US25(List<Person> people,List<Family> families) {
+		 Family fam;
+		 String birt = null;
+		 ArrayList<Person> children = new ArrayList<Person>();
+		
+		 for (int i = 0; i < families.size(); i++) {
+			 List<List<String>> rowList_person = new ArrayList<>();
+			
+			 fam = families.get(i);
+			 children = fam.children;
+	         Set<List<String>> person = new HashSet<>();
+	         for(int j =0; j<children.size();j++){
+	        	 List<String> person_info = new ArrayList<>(Arrays.asList("0", "0"));
+				 birt = children.get(j).birt_year + "-" + children.get(j).birt_month + "-" + children.get(j).birt_day;
+				 person_info.set(0,children.get(j).name);
+				 person_info.set(1, birt);
+				 rowList_person.add(person_info);
+			 }
+			 for (int k =0; k<rowList_person.size();k++) {
+				 if (person.add(rowList_person.get(k)) == false) {
+					 System.out.println("ERROR: Family: US25: Children name " +rowList_person.get(k).get(0) + " in family should be unique.");
+				 }
+			 }
+		 }
+		 
+	}
 }
+
