@@ -178,7 +178,7 @@ public class CheckDate {
                                 Integer.parseInt(families.get(i).marr_month), Integer.parseInt(families.get(i).marr_day));
                         int age = birthday.until(marrday).getYears();
                         if (age < 14) {
-                            System.out.println("ERROR: FAMILY: US10: " + people.get(j).id_indi + ": Marriage before 14.");
+                            System.out.println("ERROR: INDIVIDUAL: US10: " + people.get(j).id_indi + ": Marriage before 14.");
                         }
                     }//husband wife
                 }

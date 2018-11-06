@@ -20,6 +20,7 @@ public class ParseGEDCOM {
 	private Family family;
 	public List<Person> people = new ArrayList<>();    //List of persons with id 
 	public List<Family> families =  new ArrayList<>(); //List of families with id 
+	private boolean lastPerson = false;
 	
 	enum MonthLetter{
 		ZERO,JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC;
@@ -153,6 +154,21 @@ public class ParseGEDCOM {
 									}
 								} else if(tag.equals("FAM")){
 
+									if (lastPerson == false) {
+										//add last parsed person
+										if(personInfo.get(0) != "0") {
+											for (int i = 0; i < 9; i++) {
+												if (personInfo.get(i) == "0") {
+													personInfo.set(i, "NA");
+												}
+											}
+											people.add(person);
+											rowList_indi.add(personInfo);							
+										}
+									}
+									
+									lastPerson = true;
+									
 									//read family id
 									if(str.charAt(0) == '0') {
 										if (firstAddFam) {
@@ -484,16 +500,17 @@ public class ParseGEDCOM {
 						} 	
 					}
 					
-					
-					//add last parsed person
-					if(personInfo.get(0) != "0") {
-						for (int i = 0; i < 9; i++) {
-							if (personInfo.get(i) == "0") {
-								personInfo.set(i, "NA");
+					if (!lastPerson) {
+						//add last parsed person
+						if(personInfo.get(0) != "0") {
+							for (int i = 0; i < 9; i++) {
+								if (personInfo.get(i) == "0") {
+									personInfo.set(i, "NA");
+								}
 							}
+							people.add(person);
+							rowList_indi.add(personInfo);							
 						}
-						people.add(person);
-						rowList_indi.add(personInfo);							
 					}
 						
 					//sort id
