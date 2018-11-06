@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import wagu.Block;
 import wagu.Board;
 import wagu.Table;
@@ -65,10 +64,8 @@ public class PrintList {
     public List<List<String>> US33(List<Person> people, List<Family> families) {
         List <String> headerList_orphans = Arrays.asList("ID", "Name", "Family ID");;	//table header for orphans
         List<List<String>> rowList_orphans = new ArrayList<>();							//list of orphans for print table
-
         for (int i = 0; i < families.size(); i++) {
             List<String> orphans = new ArrayList<>(Arrays.asList("0","0","0"));
-
             if (families.get(i).husband.alive.equals("False") && families.get(i).wife.alive.equals("False") ) {
                 for (Person p: families.get(i).children) {
                     if (p.alive.equals("True") && Integer.parseInt(p.age) < 18) {
@@ -93,10 +90,10 @@ public class PrintList {
      * sprint3 US30 List all living married people in a GEDCOM file
      */
     public List<List<String>> US30(List<Person> people, List<Family> families) {
-        List<String> headerList_living_married = Arrays.asList("ID", "Name", "Family ID");//table header for deceased
-        List<List<String>> rowList_living_married = new ArrayList<>();        //list of death for print table
+        List<String> headerList_living_married = Arrays.asList("ID", "Name", "Family ID");
+        List<List<String>> rowList_living_married = new ArrayList<>();        
         for (int i = 0; i < families.size(); i++) {
-            if (families.get(i).marryDateValid && !families.get(i).divorceDateValid) {
+            if (families.get(i).marryDateValid && !families.get(i).marr_year.equals("NA") && families.get(i).div_year.equals("NA")) {
                 for (int j = 0; j < people.size(); j++) {
                     if (people.get(j).id_indi.equals(families.get(i).id_husband) ||
                             people.get(j).id_indi.equals(families.get(i).id_wife)) {
@@ -112,7 +109,7 @@ public class PrintList {
             }
         }
         if (rowList_living_married.size() > 0) {
-            System.out.println("living married ");
+            System.out.println("Living married ");
             printTable(headerList_living_married, rowList_living_married, 530);
         } else {
             System.out.println("No living married  In the GEDCOM");

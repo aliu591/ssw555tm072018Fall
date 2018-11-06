@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class PrintListTest {
 	@Test
-	public void testUS30() throws Exception {
+	public void testUS30() {
 		List<Person> people = new ArrayList<>();
 		List<Family> families = new ArrayList<>();
 		Person person1 = new Person();
@@ -20,30 +20,32 @@ public class PrintListTest {
 		person1.id_indi = "I1";
 		person1.alive = "True";
 		person1.name ="XiaoLi";
+		
 		person2.id_indi = "I2";
 		person2.alive = "True";
 		person2.name ="XiaoZhou";
+		
 		person3.id_indi = "I3";
 		person3.alive = "False";
 		person3.name ="XiaoLei";
 
+		//divorce
 		family1.marryDateValid = true;
-		family1.divorceDateValid = false;
+		family1.divorceDateValid = true;
+		family1.marr_year = "1980";
+		family1.div_year = "1990";
 		family1.id_wife = "I1";
+		family1.id_husband = "I3";
 		family1.id_fam = "F1";
 
+		//I3 husband dead
 		family2.marryDateValid = true;
 		family2.divorceDateValid = true;
+		family2.marr_year = "1980";
+		family2.div_year = "NA";
 		family2.id_wife = "I2";
 		family2.id_husband = "I3";
 		family2.id_fam = "F2";
-
-		family3.marryDateValid = true;
-		family3.divorceDateValid = true;
-		family3.id_wife = "I2";
-		family3.id_husband = "I3";
-		family3.id_fam = "F3";
-
 
 		people.add(person1);
 		people.add(person2);
@@ -56,9 +58,9 @@ public class PrintListTest {
 		PrintList printList = new PrintList();
 		List<List<String>> list = printList.US30(people, families);
 
-		assertEquals(list.get(0).get(0), "I1" );
-		assertEquals(list.get(0).get(1), "XiaoLi" );
-		assertEquals(list.get(0).get(2), "F1" );
+		assertEquals(list.get(0).get(0), "I2" );
+		assertEquals(list.get(0).get(1), "XiaoZhou" );
+		assertEquals(list.get(0).get(2), "F2" );
 	}
 
 	@Test

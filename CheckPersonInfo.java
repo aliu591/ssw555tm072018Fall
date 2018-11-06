@@ -105,7 +105,7 @@ public class CheckPersonInfo {
             for (int i = 0; i < person.id_fams.size(); i++) {
                 for (int j = 0; j < person.id_famc.size(); j++) {
                     if (person.id_fams.get(i).equals(person.id_famc.get(j))) {
-                        System.out.println("ERROR: Individual: US18: Individual ID "+person.id_indi+" married with other sibling in family");
+                        System.out.println("ERROR: Individual: US18: Individual ID " + person.id_indi+ " married with other sibling in family");
                     }
                 }
             }
