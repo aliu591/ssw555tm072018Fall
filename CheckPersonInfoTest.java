@@ -10,6 +10,53 @@ import org.junit.Test;
 
 public class CheckPersonInfoTest {
 	@Test
+	public void testUS18() throws Exception {
+		List<Person> people = new ArrayList<>();
+		List<Family> families = new ArrayList<>();
+		Person person1 = new Person();
+		Person person2 = new Person();
+		Person person3 = new Person();
+		Person person4 = new Person();
+		Family family = new Family();
+
+		person1.id_indi = "I1";
+		person1.id_famc.add("F1");
+		person1.id_fams.add("F1");
+		person2.id_indi = "I2";
+		person2.id_famc.add("F1");
+		person2.id_fams.add("F1");
+		person3.id_indi = "I3";
+		person3.id_famc.add("F2");
+		person3.id_fams.add("F3");
+		person4.id_indi = "I4";
+		person4.id_famc.add("F4");
+		person4.id_fams.add("F3");
+
+
+		people.add(person1);
+		people.add(person2);
+		people.add(person3);
+		people.add(person4);
+		families.add(family);
+
+		//for capturing the system.out.println
+		PrintStream originalOut = System.out;
+		OutputStream os = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(os);
+		System.setOut(ps);
+
+
+		CheckPersonInfo checkPersonInfo = new CheckPersonInfo();
+		checkPersonInfo.US18(people,families);
+		//for println
+		String separator = System.getProperty("line.separator");
+		assertEquals("ERROR: Individual: US18: Individual ID I1 married with other sibling in family" + separator
+				+"ERROR: Individual: US18: Individual ID I2 married with other sibling in family" + separator, os.toString());
+
+		System.setOut(originalOut);
+	}
+
+	@Test
 	public void testUS21() throws Exception {
 		List<Person> people = new ArrayList<>();
 		List<Family> families = new ArrayList<>();
