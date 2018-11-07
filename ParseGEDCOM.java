@@ -620,7 +620,7 @@ public class ParseGEDCOM {
         Table table1 = new Table(board1, 350, headerList_fam, rowList_fam);
         table1.setGridMode(Table.GRID_COLUMN);
         //setting width and data-align of columns
-        List<Integer> colWidthsList1 = Arrays.asList(10, 14, 10, 10, 30, 10, 30, 30);
+        List<Integer> colWidthsList1 = Arrays.asList(10, 14, 10, 10, 30, 10, 30, 40);
         List<Integer> colAlignList1 = Arrays.asList(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, 
         										   Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER);
         table1.setColWidthsList(colWidthsList1);
