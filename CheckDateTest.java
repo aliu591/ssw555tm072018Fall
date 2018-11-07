@@ -200,7 +200,7 @@ public class CheckDateTest {
         checkDate.US10(people, families);
         //for println
         String separator = System.getProperty("line.separator");
-        assertEquals("ERROR: FAMILY: US10: I12: Marriage before 14." + separator, os.toString());
+        assertEquals("ERROR: INDIVIDUAL: US10: I12: Marriage before 14." + separator, os.toString());
         System.setOut(originalOut);
     }
 

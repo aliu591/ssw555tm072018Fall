@@ -1,4 +1,3 @@
-package sprint3;
 import java.util.*;
 
 public class CheckPersonInfo {
@@ -84,10 +83,11 @@ public class CheckPersonInfo {
                 int count = 0;
                 for (int i = 0; i < family.children.size() - 1; i++) {
                     for (int j = i + 1; j < family.children.size(); j++) {
-                        if (family.children.get(i).birt_year == family.children.get(j).birt_year
-                                && family.children.get(i).birt_month == family.children.get(j).birt_month
-                                && family.children.get(i).birt_day == family.children.get(j).birt_day) {
+                        if (family.children.get(i).birt_year.equals(family.children.get(j).birt_year)
+                                && family.children.get(i).birt_month.equals(family.children.get(j).birt_month)
+                                && family.children.get(i).birt_day.equals(family.children.get(j).birt_day)) {
                             count++;
+
                         }
                     }
                 }
@@ -102,15 +102,30 @@ public class CheckPersonInfo {
      * sprint3 US18 Siblings should not marry one another
      */
     public void US18(List<Person> people, List<Family> families) {
-        for (Person person : people) {
-            for (int i = 0; i < person.id_fams.size(); i++) {
-                for (int j = 0; j < person.id_famc.size(); j++) {
-                    if (person.id_fams.get(i).equals(person.id_famc.get(j))) {
-                        System.out.println("ERROR: Individual: US18: Individual ID " + person.id_indi+ " married with other sibling in family");
-                    }
-                }
-            }
-        }
+    	 List<List<String>> spouse_family = new ArrayList<>();
+         List<List<String>> siblings_family = new ArrayList<>();
+         for (Family family : families) {
+             List<String> spouse = new ArrayList<>();
+             spouse.add(family.id_husband);
+             spouse.add(family.id_wife);
+             if (family.id_children.size() > 1) {
+                 List<String> siblings = new ArrayList<>();
+                 for (int i = 0; i < family.id_children.size(); i++) {
+                     siblings.add(family.id_children.get(i));
+                 }
+                 siblings_family.add(siblings);
+             }
+             spouse_family.add(spouse);
+         }
+         for (int i = 0; i < spouse_family.size(); i++) {
+             for (int j = 0; j < siblings_family.size(); j++) {
+                 if (siblings_family.get(j).containsAll(spouse_family.get(i))) {
+                     for (int x = 0; x < spouse_family.get(i).size(); x++)
+                         System.out.println("ERROR: Individual: US18: Individual ID " + spouse_family.get(i).get(x)
+                                 + " married with other sibling in family");
+                 }
+             }
+         }
     }
     
 	 /**
