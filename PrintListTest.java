@@ -5,7 +5,123 @@ import java.util.List;
 import org.junit.Test;
 
 public class PrintListTest {
-	@Test
+    @Test
+    public void testUS35() throws Exception {
+		List<Person> people = new ArrayList<>();
+		List<Family> families = new ArrayList<>();
+		Person person1 = new Person();
+		Person person2 = new Person();
+		Person person3 = new Person();
+		Person person4 = new Person();
+		Family family1 = new Family();
+		people.add(person1);
+		people.add(person2);
+		people.add(person3);
+		people.add(person4);
+		families.add(family1);
+
+		person1.id_indi = "I1";
+		person2.id_indi = "I2";
+		person3.id_indi = "I3";
+		person4.id_indi = "I4";
+
+		person1.name = "Person1";
+		person2.name = "Person2";
+		person3.name = "Person3";
+		person4.name = "Person4";
+
+		person1.birt_year = "2018";
+		person1.birt_month = "11";
+		person1.birt_day = "11";
+		person2.birt_year = "1999";
+		person2.birt_month = "07";
+		person2.birt_day = "01";
+		person3.birt_year = "2018";
+		person3.birt_month = "10";
+		person3.birt_day = "11";
+		person4.birt_year = "2018";
+		person4.birt_month = "11";
+		person4.birt_day = "09";
+
+		person1.birthValid = true;
+		person2.birthValid = true;
+		person3.birthValid = true;
+		person4.birthValid = true;
+		person1.birthBeforeToday = true;
+		person2.birthBeforeToday = true;
+		person3.birthBeforeToday = true;
+		person4.birthBeforeToday = true;
+
+		PrintList printList = new PrintList();
+		List<List<String>> list = printList.US35(people, families);
+
+		assertEquals( "I1" ,list.get(0).get(0));
+		assertEquals( "Person1",list.get(0).get(1) );
+		assertEquals("2018-11-11" ,list.get(0).get(2));
+		assertEquals("I4" ,list.get(1).get(0));
+		assertEquals("Person4",list.get(1).get(1) );
+		assertEquals("2018-11-09" ,list.get(1).get(2));
+    }
+
+    @Test
+    public void testUS36() throws Exception {
+		List<Person> people = new ArrayList<>();
+		List<Family> families = new ArrayList<>();
+		Person person1 = new Person();
+		Person person2 = new Person();
+		Person person3 = new Person();
+		Person person4 = new Person();
+		Family family1 = new Family();
+		people.add(person1);
+		people.add(person2);
+		people.add(person3);
+		people.add(person4);
+		families.add(family1);
+
+		person1.id_indi = "I1";
+		person2.id_indi = "I2";
+		person3.id_indi = "I3";
+		person4.id_indi = "I4";
+
+		person1.name = "Person1";
+		person2.name = "Person2";
+		person3.name = "Person3";
+		person4.name = "Person4";
+
+		person1.deat_year = "1999";
+		person1.deat_month = "11";
+		person1.deat_day = "07";
+		person2.deat_year = "2018";
+		person2.deat_month = "11";
+		person2.deat_day = "01";
+		person3.deat_year = "2018";
+		person3.deat_month = "10";
+		person3.deat_day = "12";
+		person4.deat_year = "2018";
+		person4.deat_month = "10";
+		person4.deat_day = "11";
+
+		person1.birthValid = true;
+		person2.birthValid = true;
+		person3.birthValid = true;
+		person4.birthValid = true;
+		person1.birthBeforeToday = true;
+		person2.birthBeforeToday = true;
+		person3.birthBeforeToday = true;
+		person4.birthBeforeToday = true;
+
+		PrintList printList = new PrintList();
+		List<List<String>> list = printList.US36(people, families);
+
+		assertEquals( "I2" ,list.get(0).get(0));
+		assertEquals( "Person2",list.get(0).get(1) );
+		assertEquals("2018-11-01" ,list.get(0).get(2));
+		assertEquals("I3" ,list.get(1).get(0));
+		assertEquals("Person3",list.get(1).get(1) );
+		assertEquals("2018-10-12" ,list.get(1).get(2));
+    }
+
+    @Test
 	public void testUS30() {
 		List<Person> people = new ArrayList<>();
 		List<Family> families = new ArrayList<>();

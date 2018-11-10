@@ -29,8 +29,10 @@ public class readGEDCOM {
 			checkPersonInfo.US14(people, families);
 			checkPersonInfo.US18(people, families);
 			checkPersonInfo.US25(people, families);
-			
-			
+
+			//sprint 4 List
+			printList.US35(people, families);
+			printList.US36(people, families);
 			
 			//SPRINT 1 & SPRINT2
 //			checkDate.US01(people, families);
