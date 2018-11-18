@@ -1,5 +1,4 @@
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class PrintList {
     /**
      * Sprint 1: US 29, list deceased
      */
-    public List<List<String>> US29(List<Person> people, List<Family> families) {
+    public List<List<String>> US29(List<Person> people) {
         List<String> headerList_death = Arrays.asList("ID", "Name", "Death Date");
         ;        //table header for deceased
         List<List<String>> rowList_death = new ArrayList<>();        //list of death for print table
@@ -66,7 +65,7 @@ public class PrintList {
     /**
      * Sprint 3: US 33, list orphans
      */
-    public List<List<String>> US33(List<Person> people, List<Family> families) {
+    public List<List<String>> US33(List<Family> families) {
         List<String> headerList_orphans = Arrays.asList("ID", "Name", "Family ID");
         ;    //table header for orphans
         List<List<String>> rowList_orphans = new ArrayList<>();                            //list of orphans for print table
@@ -126,7 +125,7 @@ public class PrintList {
     /**
      * sprint3 US27 Include person's current age when listing individuals
      */
-    public List<List<String>> US27(List<Person> people, List<Family> families) {
+    public List<List<String>> US27(List<Person> people) {
         List<String> person_info = Arrays.asList("ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Is child of family", "Is spouse of family");
         List<List<String>> rowList_person = new ArrayList<>();
         for (int i = 0; i < people.size(); i++) {
@@ -188,7 +187,7 @@ public class PrintList {
      * List all people in a GEDCOM file who were born in the last 30 days
      */
 
-    public List<List<String>> US35(List<Person> people, List<Family> families) {
+    public List<List<String>> US35(List<Person> people) {
         LocalDate now = LocalDate.now();
         LocalDate recent;
         List<String> headerList_recent_births = Arrays.asList("ID", "Name", "Births Date");//table header
@@ -220,7 +219,7 @@ public class PrintList {
      * Sprint 4: US 36, List recent deaths
      * List all people in a GEDCOM file who died in the last 30 days
      */
-    public List<List<String>> US36(List<Person> people, List<Family> families) {
+    public List<List<String>> US36(List<Person> people) {
         LocalDate now = LocalDate.now();
         LocalDate recent;
         List<String> headerList_recent_deaths = Arrays.asList("ID", "Name", "Deaths Date");//table header
@@ -247,5 +246,70 @@ public class PrintList {
         }
         return rowList_recent_deaths;
     }
-
+    
+    /**
+     * Sprint 4: US 38, List upcoming birthdays
+     * List all living people in a GEDCOM file whose birthdays occur in the next 30 days
+     */
+    public List<List<String>> US38(List<Person> people) {
+    	LocalDate now = LocalDate.now();
+        LocalDate upcoming;
+        List<String> headerList_birthday = Arrays.asList("ID", "Name", "Upcoming Birthdays");//table header
+        List<List<String>> rowList_birthday = new ArrayList<>();        //list for print table
+        upcoming = now.plus(30, ChronoUnit.DAYS);
+        for (int i = 0; i < people.size(); i++) {
+            List<String> person_birthdays = new ArrayList<>(Arrays.asList("0", "0", "0"));
+            if (people.get(i).birthValid && people.get(i).birthBeforeToday && people.get(i).alive.equals("True")) {
+                LocalDate birthday = LocalDate.of(now.getYear(), Integer.parseInt(people.get(i).birt_month),
+                        Integer.parseInt(people.get(i).birt_day));
+                if (birthday.isBefore(upcoming) && birthday.isAfter(now)) {
+                	person_birthdays.set(0, people.get(i).id_indi);
+                	person_birthdays.set(1, people.get(i).name);
+                	person_birthdays.set(2, people.get(i).birt_year + "-" + people.get(i).birt_month + "-" + people.get(i).birt_day);
+                    rowList_birthday.add(person_birthdays);
+                }
+            }
+        }
+        if (rowList_birthday.size() > 0) {
+            System.out.println("Upcoming Birthsday");
+            printTable(headerList_birthday, rowList_birthday, 530);
+        } else {
+            System.out.println("No Upcoming Birthdays In the GEDCOM");
+        }
+        return rowList_birthday;
+    }
+    
+    /**
+     * Sprint 4: US 39, List upcoming anniversaries
+     * List all living couples in a GEDCOM file whose marriage anniversaries occur in the next 30 days
+     */
+    public List<List<String>> US39(List<Family> families) {
+    	LocalDate now = LocalDate.now();
+        LocalDate upcoming;
+        List<String> headerList_anni = Arrays.asList("ID", "Husband Name", "Wife Name", "Upcoming Anniversairies"); //table header
+        List<List<String>> rowList_anni = new ArrayList<>();        //list for print table
+        upcoming = now.plus(30, ChronoUnit.DAYS);
+        for (int i = 0; i < families.size(); i++) {
+            List<String> families_anni = new ArrayList<>(Arrays.asList("0", "0", "0", "0"));
+            if (families.get(i).marryDateValid && families.get(i).marryBeforeToday && families.get(i).div_year.equals("NA") 
+            	&& families.get(i).husband.alive.equals("True") && families.get(i).wife.alive.equals("True")) {
+                LocalDate anni = LocalDate.of(now.getYear(), Integer.parseInt(families.get(i).marr_month),
+                        Integer.parseInt(families.get(i).marr_day));
+                if (anni.isBefore(upcoming) && anni.isAfter(now)) {
+                	families_anni.set(0, families.get(i).id_fam);
+                	families_anni.set(1, families.get(i).name_hasband);
+                	families_anni.set(2, families.get(i).name_wife);
+                	families_anni.set(3, families.get(i).marr_year + "-" + families.get(i).marr_month + "-" + families.get(i).marr_day);
+                    rowList_anni.add(families_anni);
+                }
+            }
+        }
+        if (rowList_anni.size() > 0) {
+            System.out.println("Upcoming Birthsday");
+            printTable(headerList_anni, rowList_anni, 530);
+        } else {
+            System.out.println("No Upcoming Anniversaries In the GEDCOM");
+        }
+        return rowList_anni;
+    }
 }

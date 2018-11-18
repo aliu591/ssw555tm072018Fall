@@ -18,21 +18,23 @@ public class readGEDCOM {
 			families = parseFile.getFamilies();
 
 			//SPRINT 1 List
-//			printList.US29(people, families);
+//			printList.US29(people);
 			
 			//sprint 3 List
-			printList.US30(people, families);
-			printList.US27(people, families);
-			printList.US33(people, families);
+//			printList.US30(people, families);
+//			printList.US27(people);
+//			printList.US33(families);
 			
 			//sprint 3
-			checkPersonInfo.US14(people, families);
-			checkPersonInfo.US18(people, families);
-			checkPersonInfo.US25(people, families);
+//			checkPersonInfo.US14(people, families);
+//			checkPersonInfo.US18(people, families);
+//			checkPersonInfo.US25(people, families);
 
 			//sprint 4 List
-			printList.US35(people, families);
-			printList.US36(people, families);
+			//printList.US35(people);
+			//printList.US36(people);
+			printList.US38(people);
+			printList.US39(families);
 			
 			//SPRINT 1 & SPRINT2
 //			checkDate.US01(people, families);
