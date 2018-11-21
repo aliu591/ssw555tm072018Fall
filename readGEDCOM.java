@@ -1,4 +1,3 @@
-package sprint3;
 import java.io.IOException;
 import java.util.*;
 import wagu.*;
