@@ -1,3 +1,4 @@
+package sprint3;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
@@ -181,7 +182,91 @@ public class PrintList {
 
         return rowList_person;
     }
+    
+    /**
+     * Sprint 4: US 28, Order siblings by age
+     * List siblings in families by decreasing age, i.e. oldest siblings first
+	*/
+    
+    public List<List<String>> US28(List<Person> people, List<Family> families) {
+    	List<String> headerList_sibling_person = Arrays.asList("ID", "Name", "age","Family");
+    	List<List<String>> rowList_living_sibling = new ArrayList<>();
+    	Family fam=null;
+    	
+    	List<Person> siblings = new ArrayList<>();
+    	for (int i = 0; i < families.size(); i++) {
+    		List<Person> person = new ArrayList<>();
+    		fam = families.get(i);
+    		ArrayList<Person> children = fam.children;
+    		for(int j=0; j< children.size(); j++){
+    			for(int k =0; k<people.size();k++){
+    				if(people.get(k).id_indi.equals(children.get(j).id_indi)){
+    					person.add(people.get(k));
+    				}
+    			}
+    		}
+    		for (int h = 0; h < person.size(); h++){
+    			for (int j = 0; j < person.size() - 1 - h; j++){
+    				 if (Integer.parseInt(person.get(j).age) < Integer.parseInt(person.get(j + 1).age)){
+    					Person temp = person.get(j);
+    					person.set(j, person.get(j+1));
+    					person.set(j+1, temp);
 
+    				 }
+    			}
+    		}
+    		for(int n=0; n<person.size();n++){
+    			siblings.add(person.get(n));
+    		}
+    		
+    	}
+    	for(int i=0; i<siblings.size();i++){
+    		List<String> sib = new ArrayList<>(Arrays.asList("0", "0", "0","0"));
+    		sib.set(0, siblings.get(i).id_indi);
+    		sib.set(1, siblings.get(i).name);
+    		sib.set(2, siblings.get(i).age);
+    		sib.set(3, siblings.get(i).id_famc.toString());
+    		rowList_living_sibling.add(sib);
+		}
+    	 if (rowList_living_sibling.size() > 0) {
+             System.out.println("Order siblings by age: ");
+             printTable(headerList_sibling_person, rowList_living_sibling, 530);
+         } else {
+             System.out.println("No siblings in the GEDCOM");
+         }
+         return rowList_living_sibling;
+    	
+    }
+
+    /**
+     * Sprint 4: US 31, List living single
+     * List all living people over 30 who have never been married in a GEDCOM file
+	*/
+    public List<List<String>> US31(List<Person> people, List<Family> families) {
+    	 List<String> headerList_single_person = Arrays.asList("ID", "Name", "Age");
+    	 List<List<String>> rowList_living_single = new ArrayList<>();
+    	Person person=null;
+    	for (int i = 0; i < people.size(); i++) {
+    		person = people.get(i);
+    		int age = Integer.parseInt(person.age);
+            if (age>=30 && person.id_fams.size()==0 && person.alive.equals("True")) {
+            	 List<String> sigleperson = new ArrayList<>(Arrays.asList("0", "0", "0"));
+            	 sigleperson.set(0, person.id_indi);
+            	 sigleperson.set(1, person.name);
+            	 sigleperson.set(2, person.age);
+            	 rowList_living_single.add(sigleperson);
+            	}
+            }
+    	 if (rowList_living_single.size() > 0) {
+             System.out.println("Living single ");
+             printTable(headerList_single_person, rowList_living_single, 530);
+         } else {
+             System.out.println("No living single in the GEDCOM");
+         }
+         return rowList_living_single;
+    }
+    
+    
     /**
      * Sprint 4: US 35, List recent births
      * List all people in a GEDCOM file who were born in the last 30 days

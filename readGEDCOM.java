@@ -1,3 +1,4 @@
+package sprint3;
 import java.io.IOException;
 import java.util.*;
 import wagu.*;
@@ -17,37 +18,33 @@ public class readGEDCOM {
 			people = parseFile.getPeople();
 			families = parseFile.getFamilies();
 
-			//SPRINT 1 List
-//			printList.US29(people);
-			
-			//sprint 3 List
-//			printList.US30(people, families);
-//			printList.US27(people);
-//			printList.US33(families);
 			
 			//sprint 3
-//			checkPersonInfo.US14(people, families);
-//			checkPersonInfo.US18(people, families);
-//			checkPersonInfo.US25(people, families);
-
-			//sprint 4 List
-			//printList.US35(people);
-			//printList.US36(people);
-			printList.US38(people);
-			printList.US39(families);
+			printList.US33(families);
+			printList.US30(people, families);
+			printList.US27(people);
+			
+			checkPersonInfo.US14(people, families);
+			checkPersonInfo.US18(people, families);
+			
+			//sprint 4
+			printList.US31(people, families);
+			printList.US28(people, families);
 			
 			//SPRINT 1 & SPRINT2
-//			checkDate.US01(people, families);
-//			checkDate.US02(people, families);
-//			checkDate.US03(people);
-//			checkDate.US07(people);
-//			checkDate.US10(people, families);
-//			checkDate.US12(people, families);
-//			checkPersonInfo.US15(families);
-//			checkPersonInfo.US21(people,families);
-//			checkPersonInfo.US22(people, families);
-//			checkPersonInfo.US23(people);
-//			checkDate.US42(people, families);
+			printList.US29(people);
+//		
+			checkDate.US01(people, families);
+			checkDate.US02(people, families);
+			checkDate.US03(people);
+			checkDate.US07(people);
+			checkDate.US10(people, families);
+			checkDate.US12(people, families);
+			checkPersonInfo.US15(families);
+			checkPersonInfo.US21(people,families);
+			checkPersonInfo.US22(people, families);
+			checkPersonInfo.US23(people);
+			checkDate.US42(people, families);
 	
 		} catch (IOException e) {
 			
