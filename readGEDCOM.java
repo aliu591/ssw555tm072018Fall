@@ -30,6 +30,11 @@ public class readGEDCOM {
 			//sprint 4
 			printList.US31(people, families);
 			printList.US28(people, families);
+			printList.US35(people);
+			printList.US36(people);
+			printList.US38(people);
+			printList.US39(families);
+
 			
 			//SPRINT 1 & SPRINT2
 			printList.US29(people);

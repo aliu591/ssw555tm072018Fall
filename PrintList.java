@@ -312,7 +312,7 @@ public class PrintList {
         recent = now.minus(30, ChronoUnit.DAYS);
         for (int i = 0; i < people.size(); i++) {
             List<String> person_recent_deaths = new ArrayList<>(Arrays.asList("0", "0", "0"));
-            if (people.get(i).deathValid && people.get(i).deathBeforeToday) {
+            if (people.get(i).deathValid && people.get(i).deathBeforeToday && people.get(i).deat_year.equals("NA")==false) {
                 LocalDate deathday = LocalDate.of(Integer.parseInt(people.get(i).deat_year), Integer.parseInt(people.get(i).deat_month),
                         Integer.parseInt(people.get(i).deat_day));
                 if (deathday.isAfter(recent)) {
@@ -390,7 +390,7 @@ public class PrintList {
             }
         }
         if (rowList_anni.size() > 0) {
-            System.out.println("Upcoming Birthsday");
+            System.out.println("Upcoming anniversaries");
             printTable(headerList_anni, rowList_anni, 530);
         } else {
             System.out.println("No Upcoming Anniversaries In the GEDCOM");
